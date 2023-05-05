@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+    <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+</head>
+<body>
+<!--表格-->
+<table class="layui-hide" id="bookInfo" lay-filter="test"></table>
+<!--搜索框-->
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container" style="float: left">
+        <button id="addBtn" type="button" class="layui-btn layui-btn-primary" lay-event="addBookInfo">新增</button>
+        <button id="del" type="button" class="layui-btn layui-btn-danger delAll_btn" lay-event="delBookInfo">批量删除</button>
+    </div>
+    <div class="demoTable">
+        &nbsp;&nbsp;图书查询：
+        <div class="layui-inline">
+            <input class="layui-input" name="id" id="searchBookName" autocomplete="on" placeholder="请输入书名查询">
+        </div>
+        <button type="button" class="layui-btn layui-btn-normal" data-type="reload" lay-filter="data-search-btn">搜索</button>
+
+    </div>
+</script>
+<!--行操作-->
+<script type="text/html" id="barDemo">
+    <a id="editBtn" class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<!--添加表单-->
+<script type="text/html" id="add-bookInfo">
+    <div class="layui-col-md10" style="margin-left: 35px; margin-top: 20px">
+        <form class="layui-form" action="">
+            <div class="layui-form-item">
+                <label class="layui-form-label">ISBN</label>
+                <div class="layui-input-block">
+                    <input type="text" name="isbn" required lay-verify="required" placeholder="请输入书号" autoComplete="on"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">书名</label>
+                <div class="layui-input-block">
+                    <input type="text" name="bookName" required lay-verify="required" placeholder="请输入书名" autoComplete="on"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">类别</label>
+                <div class="layui-input-block">
+                    <input type="text" name="bookCategory" required lay-verify="required" placeholder="请输入类别"
+                           autoComplete="on" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">作者</label>
+                <div class="layui-input-block">
+                    <input type="text" name="author" required lay-verify="required" placeholder="请输入作者"
+                           autoComplete="on" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">出版社</label>
+                <div class="layui-input-block">
+                    <input type="text" name="publisher" required lay-verify="required" placeholder="请输入出版社" autoComplete="on"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">出版日期</label>
+                <div class="layui-input-block">
+                    <input type="date" name="publicationDate" required lay-verify="required"  autoComplete="on"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">登记日期</label>
+                <div class="layui-input-block">
+                    <input type="date" name="registrationDate" required lay-verify="required"
+                           class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">描述</label>
+                <div class="layui-input-block">
+                    <textarea name="bookInformation" placeholder="请输入内容" class="layui-textarea"></textarea>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block" style="text-align: center">
+                    <button class="layui-btn" lay-submit lay-filter="addForm">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</script>
+<!--删除按钮-->
+<script type="text/html" id="delete-form">
+    <div class="layui-col-md10" style="margin-left: 35px; margin-top: 20px">
+        <form class="layui-form" action="">
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">确定删除?</label>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block" style="text-align: center">
+                    <button class="layui-btn" lay-submit lay-filter="deleteForm">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</script>
+<!--编辑表单-->
+<script th:src="@{/layui/layui.js}" type="text/html" id="edit-form">
+    <div class="layui-col-md10" style="margin-left: 35px; margin-top: 20px">
+        <form class="layui-form" action="" lay-filter="editForm">
+            <div class="layui-form-item">
+                <label class="layui-form-label">书号</label>
+                <div class="layui-input-block">
+                    <input type="text" name="isbn" required lay-verify="required" placeholder="请输入书名" autoComplete="no"
+                           disabled value="禁止修改" style="color: darkgray"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">书名</label>
+                <div class="layui-input-block">
+                    <input type="text" name="bookName" required lay-verify="required" placeholder="请输入书名" autoComplete="on"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">类别</label>
+                <div class="layui-input-block">
+                    <input type="text" name="bookCategory" required lay-verify="required" placeholder="请输入类别"
+                           autoComplete="on" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">作者</label>
+                <div class="layui-input-block">
+                    <input type="text" name="author" required lay-verify="required" placeholder="请输入作者"
+                           autoComplete="on" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">出版社</label>
+                <div class="layui-input-block">
+                    <input type="text" name="publisher" required lay-verify="required" placeholder="请输入出版社" autoComplete="on"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">出版日期</label>
+                <div class="layui-input-block">
+                    <input type="date" name="publicationDate" required lay-verify="required"  autoComplete="on"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">登记日期</label>
+                <div class="layui-input-block">
+                    <input type="date" name="registrationDate" required lay-verify="required"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">描述</label>
+                <div class="layui-input-block">
+                    <textarea name="bookInformation" placeholder="请输入内容" class="layui-textarea"></textarea>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block" style="text-align: center">
+                    <button  class="layui-btn" lay-submit lay-filter="edit-btn-form">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</script>
+
+<script th:src="@{/layui/layui.js}" charset="utf-8"></script>
+<!-- 注意：如果你直接复制所有代码到本地，上述 JS 路径需要改成你本地的 -->
+<script>
+    layui.use(['table','form','jquery','layer'], function(){
+        var layer = layui.layer
+            ,$ = layui.jquery,form = layui.form,table = layui.table;
+        table.render({
+            elem: '#bookInfo'
+            ,url: '/manage/bookList'
+            ,toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
+            ,defaultToolbar: ['filter', 'exports', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
+                title: '提示'
+                ,layEvent: 'LAYTABLE_TIPS'
+                ,icon: 'layui-icon-tips'
+            }]
+            ,title: '图书信息表'
+            ,cols: [
+                [
+                    {type: 'checkbox', fixed: 'left'}
+                    ,{field:'isbn', title:'ISBN', width:120,}
+                    ,{field:'bookName', title:'书名', width:120 }
+                    ,{field:'bookCategory', title:'类别', width:150}
+                    ,{field:'author', title:'作者', width:80, sort: true}
+                    ,{field:'publisher', title:'出版社', width:100}
+                    ,{field:'bookInformation', title:'描述'}
+                    ,{field:'publicationDate', title:'出版日期', width:80, sort: true}
+                    ,{field:'registrationDate', title:'登记日期', width:120}
+                    ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:150}
+                ]
+            ],
+            id:'testReload'
+            ,page: true
+            ,limit:10
+            ,parseData: function (res) {
+                var result;
+                console.log(this);
+                if (this.page.curr) {
+                    result = res.data.slice(this.limit * (this.page.curr - 1), this.limit * this.page.curr);
+                } else {
+                    result = res.data.slice(0, this.limit);
+                }
+                return {"code": res.code, "msg": res.msg, "count": res.count, "data": result};
+            }
+        });
+
+
+        //头工具栏事件
+        table.on('toolbar(test)', function(obj){
+            var checkStatus = table.checkStatus(obj.config.id);
+            switch(obj.event){
+                case 'addBookInfo':
+                    var data = checkStatus.data;
+                    layer.open({
+                        title:"添加图书类别",
+                        type:1,
+                        area:['660px','600px'],
+                        content:$('#add-bookInfo').html()
+                    });
+                    break;
+                case 'delBookInfo':
+                    $(".delAll_btn").click(function () {
+                        var checkStatus = table.checkStatus('bookInfo'),
+                            data = checkStatus.data,
+
+                            bookIsbn = "";
+
+                        if (data.length > 0) {
+                            for (var i in data) {
+                                bookIsbn += data[i].isbn + ",";
+                            }
+                            layer.confirm('确定删除选中的图书信息？', {icon: 3, title: '提示信息'}, function (index) {
+                                $.ajax({
+                                    url: 'manage/deleteAllBookInfo',
+                                    type: 'DELETE',
+                                    data: {
+                                        isbn: bookIsbn
+                                    },
+                                    success: function(resultVo) {
+                                        console.log(data)
+                                        layer.msg(resultVo.msg,{
+                                            icon: 1,
+                                            time: 1000,
+                                        },function (){
+                                            parent.location.reload();
+                                        });
+                                        // tableIns.reload();
+                                        layer.close(index);
+                                    },
+                                    error: function (resultVo) {
+                                        console.log(data)
+                                        layer.msg(resultVo.msg,{
+                                            icon: 1,
+                                            time: 1000,
+                                        },function (){
+                                            parent.location.reload();
+                                        });
+                                        // tableIns.reload();
+                                        layer.close(index);
+                                    }
+
+                                });
+                            })
+                        } else {
+                            layer.msg("请选择需要删除图书信息");
+                        }
+                    });
+
+                    break;
+                //自定义头工具栏右侧图标 - 提示
+                case 'LAYTABLE_TIPS':
+                    layer.alert('我还没有想好说什么咯！');
+                    break;
+            };
+        });
+
+
+        // 监听行工具事件
+        table.on('tool(test)', function(obj){
+            var data = obj.data;
+            //console.log(obj)
+            if (obj.event === 'del') {
+                layer.confirm('确定删除图书信息？', {icon: 3, title: '提示信息'}, function(index) {
+                    $.ajax({
+                        url: 'manage/deleteBookInfo',
+                        type: 'DELETE',
+                        data: {
+                            isbn: obj.data.isbn
+                        },
+                        success: function(resultVo) {
+                            console.log(resultVo)
+                            layer.msg(resultVo.msg,{
+                                icon: 1,
+                                time: 1000,
+                            },function (){
+                                parent.location.reload();
+                            });
+                            layer.close(index);
+                        },
+                        error: function (resultVo) {
+                            layer.msg(resultVo.msg,{
+                                icon: 2,
+                                time: 1000,
+                            },function (){
+                                parent.location.reload();
+                            });
+                            layer.close(index);
+                        }
+
+                    });
+                });
+            } else if (obj.event === 'edit') {
+                // 弹出表单进行修改
+                layer.open({
+                    elem: "#add-bookInfo",
+                    title: "修改书籍信息",
+                    type: 1,
+                    area: ['660px', '550px'],
+                    content: $('#edit-form').html(),
+                    success: function(layero, index) {
+                        form.val('editForm', {
+                            // 赋值
+                            "isbn": obj.data.isbn,
+                            "bookName": obj.data.bookName,
+                            "bookCategory": obj.data.bookCategory,
+                            "author": obj.data.author,
+                            "publisher": obj.data.publisher,
+                            "bookInformation": obj.data.bookInformation,
+                            "publicationDate": obj.data.publicationDate,
+                            "registrationDate": obj.data.registrationDate,
+                        });
+                    },
+                    error: function (resultVo) {
+                        layer.msg(resultVo.msg,{
+                            icon: 2,
+                            time: 1000,
+                        },function (){
+                            parent.location.reload();
+                        });
+                        layer.close(index);
+                    }
+                });
+            }
+        });
+
+        // 监听提交事件
+        form.on('submit(addForm)', function (data) {
+            $.post("manage/insertBookInfo", data.field, function (resultVo) {
+                layer.msg(resultVo.msg,{
+                    icon: 1,
+                    time: 1000  // 1秒关闭
+                }, function (){
+                    // 一秒以后进行页面重新刷新
+                    parent.location.reload();
+                });
+            }).fail(function() {
+                layer.alert('添加失败!', {icon: 2});
+            });
+            // 阻止form表单提示
+            return false;
+        })
+        // 删除数据
+        form.on('submit(deleteForm)', function (data) {
+            $.post("manage/deleteBookInfo", data.field, function (resultVo) {
+                layer.msg(resultVo.msg,{
+                    icon: 1,
+                    time: 1000  // 1秒关闭
+                }, function (){
+                    // 一秒以后进行页面重新刷新
+                    parent.location.reload();
+                });
+            })
+            // 阻止form表单提示
+            return false;
+        })
+
+        // 修改数据
+        form.on('submit(edit-btn-form)', function (data) {
+            $.post("manage/updateBookInfo", data.field, function (resultVo) {
+                layer.msg(resultVo.msg,{
+                    icon: 1,
+                    time: 1000  // 1秒关闭
+                }, function (){
+                    // 一秒以后进行页面重新刷新
+                    parent.location.reload();
+                });
+            }).fail(function() {
+                layer.alert('添加失败!', {icon: 2});
+            });
+            // 阻止form表单提示
+            return false;
+        })
+    });
+
+    // 进行搜索操作
+    var $ = layui.$, active = {
+        reload: function(){
+            // 获取搜索框中的内容
+            var demoReloadTwo = $('#searchBookName')
+            //执行重载
+            table.reload('testReload', {
+                page: {
+                    curr: 1 //重新从第 1 页开始
+                }
+                ,where: {
+                    bookName: demoReloadTwo.val()
+                }
+            });
+        }
+    };
+
+    $('.demoTable .layui-btn').on('click', function(){
+        var type = $(this).data('type');
+        active[type] ? active[type].call(this) : '';
+    });
+</script>
+
+</body>
+</html>

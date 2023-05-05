@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Layui</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+  <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+</head>
+<body>
+
+<table class="layui-hide" id="userInfo" lay-filter="test"></table>
+
+<!--搜索框-->
+<script type="text/html" id="toolbarDemo">
+  <div class="demoTable">
+    &nbsp;&nbsp;用户查询：
+    <div class="layui-inline">
+      <input class="layui-input" id="searchUserName" name="username" autocomplete="off" placeholder="请输入用户名查询">
+    </div>
+    <button id="searchBtn" type="button" class="layui-btn layui-btn-normal" data-type="reload" lay-filter="data-search-btn">搜索</button>
+  </div>
+</script>
+<!--操作栏-->
+<script type="text/html" id="barDemo">
+  <a id="editBtn" class="layui-btn layui-btn-primary layui-btn-xs" lay-event="showInfo">查看</a>
+  <a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="active">启用</a>
+  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="forbid">禁用</a>
+</script>
+<!--信息展示-->
+<script th:src="@{/layui/layui.js}" type="text/html" id="show-info">
+  <div class="layui-col-md10" style="margin-left: 35px; margin-top: 20px">
+    <form class="layui-form" action="" lay-filter="showInfoForm">
+      <div class="layui-form-item">
+        <label class="layui-form-label">用户ID</label>
+        <div class="layui-input-block">
+          <input type="text" name="userId" required lay-verify="required" autoComplete="no"
+                 disabled style="color: darkgray"
+                 class="layui-input">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">用户名</label>
+        <div class="layui-input-block">
+          <input type="text" name="username" required lay-verify="required" autoComplete="on"
+                 disabled style="color: darkgray"
+                 class="layui-input">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">电子邮箱</label>
+        <div class="layui-input-block">
+          <input type="text" name="userEmail" required lay-verify="required"
+                 disabled style="color: darkgray"
+                 autoComplete="on" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">电话</label>
+        <div class="layui-input-block">
+          <input type="text" name="userPhone" required lay-verify="required"
+                 disabled style="color: darkgray"
+                 autoComplete="no" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">姓名</label>
+        <div class="layui-input-block">
+          <input type="text" name="userRealName" required lay-verify="required"
+                 autoComplete="no"
+                 disabled style="color: darkgray"
+                 class="layui-input">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">性别</label>
+        <div class="layui-input-block">
+          <input type="text" name="userGender" required lay-verify="required"  autoComplete="on"
+                 disabled style="color: darkgray"
+                 class="layui-input">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">身份证号码</label>
+        <div class="layui-input-block">
+          <input type="text" name="userIdentity" required lay-verify="required"
+                 disabled style="color: darkgray"
+                 class="layui-input">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">年龄</label>
+        <div class="layui-input-block">
+          <input type="text" name="userAge" required lay-verify="required"
+                 disabled style="color: darkgray"
+                 class="layui-input">
+        </div>
+      </div>
+    </form>
+  </div>
+</script>
+
+<script th:src="@{/layui/layui.js}" charset="utf-8"></script>
+
+<!-- 注意：如果你直接复制所有代码到本地，上述 JS 路径需要改成你本地的 -->
+
+<script>
+  layui.use(['table','form','jquery','layer'], function(){
+    var layer = layui.layer
+            ,$ = layui.jquery,form = layui.form,table = layui.table;
+    table.render({
+      elem: '#userInfo'
+      ,url: '/manage/getOrdinaryUsers'
+      ,toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
+      ,defaultToolbar: ['filter', 'exports', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
+        title: '提示'
+        ,layEvent: 'LAYTABLE_TIPS'
+        ,icon: 'layui-icon-tips'
+      }]
+      ,title: '用户信息表'
+      ,cols: [
+        [
+          {type: 'checkbox', fixed: 'left'}
+          ,{field:'userId', title:'ID', width:80,}
+          ,{field:'username', title:'用户名', width:100 }
+          ,{field:'userEmail', title:'电子邮箱', width:150}
+          ,{field:'userPhone', title:'电话', width:100}
+          ,{field:'userRealName', title:'姓名', width:100}
+          ,{field:'userGender', title:'性别',width: 50}
+          ,{field:'userIdentity', title:'身份号码', width:120}
+          ,{field:'userAge', title:'年龄', width:50}
+          ,{field:'userCreateTime', title:'用户创建时间', width:120}
+          ,{field:'userCreateTime', title:'近期修改时间', width:120}
+          ,{field:'userStatus', title:'状态', width:80}
+          ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:200}
+        ]
+      ]
+      ,page: true
+      ,limit:3
+      ,request: {
+        pageName: 'page' // 指定请求参数中当前页码的字段名，默认为page
+        ,limitName: 'limit' // 指定请求参数中每页数据量的字段名，默认为limit
+      }
+      ,parseData: function (res) {
+        var result;
+        console.log(this);
+        if (this.page.curr) {
+          result = res.data.slice(this.limit * (this.page.curr - 1), this.limit * this.page.curr);
+        } else {
+          result = res.data.slice(0, this.limit);
+        }
+        return {"code": res.code, "msg": res.msg, "count": res.count, "data": result};
+      },
+      error: function (resultVo) {
+        console.log(data)
+        layer.msg(resultVo.msg,{
+          icon: 2,
+          time: 1000,
+        },function (){
+          parent.location.reload();
+        });
+        // tableIns.reload();
+        layer.close(index);
+      }
+    });
+
+
+    // 监听行工具事件
+    table.on('tool(test)', function(obj){
+      if (obj.event === 'showInfo') {
+        layer.open({
+
+          title: "用户基本信息",
+          type: 1,
+          area: ['660px', '550px'],
+          content: $('#show-info').html(),
+          success: function(layero, index) {
+            form.val('showInfoForm', {
+              // 赋值
+              "userId": obj.data.userId,
+              "username": obj.data.username,
+              "userEmail": obj.data.userEmail,
+              "userPhone": obj.data.userPhone,
+              "userRealName": obj.data.userRealName,
+              "userGender": obj.data.userGender,
+              "userIdentity": obj.data.userIdentity,
+              "userAge": obj.data.userAge
+            });
+          }
+        });
+      }else if (obj.event === 'forbid') {
+        layer.confirm('确定禁用用户？', {icon: 3, title: '提示信息'}, function(index) {
+          $.ajax({
+            url: '/manage/forbidUser',
+            type: 'PUT',
+            data: {
+              userId: obj.data.userId,
+            },
+            success: function(resultVo) {
+              layer.msg(resultVo.msg,{
+                icon: 1,
+                time: 1000,
+              },function (){
+
+                location.reload()
+              });
+              layer.close(index);
+            },
+            error: function (resultVo) {
+              layer.msg(resultVo.msg,{
+                icon: 2,
+                time: 1000,
+              },function (){
+                location.reload();
+              });
+              layer.close(index);
+            }
+
+          });
+        });
+      }else if (obj.event === 'active') {
+        layer.confirm('确定启用用户？', {icon: 3, title: '提示信息'}, function(index) {
+          $.ajax({
+            url: 'manage/activeUser',
+            type: 'PUT',
+            data: {
+              userId: obj.data.userId,
+            },
+            success: function(resultVo) {
+              console.log(obj.data.userId);
+              console.log(resultVo);
+              layer.msg(resultVo.msg,{
+                icon: 1,
+                time: 1000,
+              },function (){
+                location.reload();
+              });
+              close(index);
+            },
+            error: function (resultVo) {
+              layer.msg(resultVo.msg,{
+                icon: 2,
+                time: 1000,
+              },function (){
+                location.reload();
+              });
+              layer.close(index);
+            }
+
+          });
+        });
+      }
+    });
+
+    $('#searchBtn').on('click', function(){
+      var username = $('#searchUserName').val();
+      // 执行搜索，并重载表格数据
+      table.reload('userInfo', {
+        where: {
+          username: username
+        },
+        page: {
+          curr: 1 //重新从第 1 页开始
+        }
+      });
+    });
+  });
+  // 进行搜索操作
+</script>
+
+</body>
+</html>

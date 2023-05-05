@@ -1,0 +1,17 @@
+server:
+  port: 8888    # 端口号
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/physical_manage_sysetm?
+    username: root
+    password: 15983044725
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    cache: false
+    mode: HTML
+
+logging:
+  level:
+    com.it.dao: debug
