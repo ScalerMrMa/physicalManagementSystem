@@ -3,7 +3,7 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/physical_manage_sysetm?
+    url: jdbc:mysql://localhost:3306/physical_manage_system?
     username: root
     password: 15983044725
   thymeleaf:
@@ -11,6 +11,8 @@ spring:
     suffix: .html
     cache: false
     mode: HTML
+#  jackson:
+#    date-format: yyyy-MM-dd
 
 logging:
   level:

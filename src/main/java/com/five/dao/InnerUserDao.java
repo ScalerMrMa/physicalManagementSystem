@@ -1,14 +1,14 @@
 package com.five.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.five.domain.LoginUser;
+import com.five.domain.InnerUser;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
  * @author MrMa
  * @version 1.0
- * @description     用户管理基础操作
+ * @description
  */
 @Mapper
-public interface OrdinaryUserDao extends BaseMapper<LoginUser> {
+public interface InnerUserDao extends BaseMapper<InnerUser> {
 }

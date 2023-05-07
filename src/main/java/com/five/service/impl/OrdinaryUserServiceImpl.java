@@ -3,7 +3,8 @@ package com.five.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.five.dao.OrdinaryUserDao;
-import com.five.domain.OrdinaryUser;
+import com.five.domain.LoginUser;
+
 import com.five.service.OrdinaryUserService;
 import com.five.vo.DataVo;
 import com.five.vo.ResultVo;
@@ -29,16 +30,16 @@ public class OrdinaryUserServiceImpl implements OrdinaryUserService {
      * @return
      */
     @Override
-    public DataVo<OrdinaryUser> getNormalUsers(String username) {
+    public DataVo<LoginUser> getNormalUsers(String username) {
         // 构造查询条件
-        QueryWrapper<OrdinaryUser> queryWrapper = new QueryWrapper<>();
+        QueryWrapper<LoginUser> queryWrapper = null;
         Integer count = null;
-        List<OrdinaryUser> userList = null;
-        DataVo<OrdinaryUser> userDataVo = new DataVo<>();
+        List<LoginUser> userList = null;
+        DataVo<LoginUser> userDataVo = new DataVo<>();
         try {
             queryWrapper = new QueryWrapper<>();
             if (username != null) {
-                queryWrapper.like("username", username); // 模糊查询姓名
+                queryWrapper.like("login_username", username); // 模糊查询姓名
             }
             // 查询结果
             count = userDao.selectCount(queryWrapper);
@@ -67,11 +68,11 @@ public class OrdinaryUserServiceImpl implements OrdinaryUserService {
     @Override
     public ResultVo forbidNormalUser(String userId) {
         // 条件构造器
-        LambdaUpdateWrapper<OrdinaryUser> lambdaUpdateWrapper = new LambdaUpdateWrapper<>();
-        lambdaUpdateWrapper.eq(OrdinaryUser::getUserId, userId);
+        LambdaUpdateWrapper<LoginUser> lambdaUpdateWrapper = new LambdaUpdateWrapper<>();
+        lambdaUpdateWrapper.eq(LoginUser::getLoginId, userId);
         // 根据id查询出用户
-        OrdinaryUser ordinaryUser = userDao.selectOne(lambdaUpdateWrapper);
-        lambdaUpdateWrapper.set(OrdinaryUser::getUserStatus, "禁用");
+        LoginUser ordinaryUser = userDao.selectOne(lambdaUpdateWrapper);
+        lambdaUpdateWrapper.set(LoginUser::getLoginStatus, "禁用");
 
         // 构造操作结果
         ResultVo resultVo = new ResultVo();
@@ -100,11 +101,11 @@ public class OrdinaryUserServiceImpl implements OrdinaryUserService {
     @Override
     public ResultVo activeNormalUser(String userId) {
         // 条件构造器
-        LambdaUpdateWrapper<OrdinaryUser> lambdaUpdateWrapper = new LambdaUpdateWrapper<>();
-        lambdaUpdateWrapper.eq(OrdinaryUser::getUserId, userId);
+        LambdaUpdateWrapper<LoginUser> lambdaUpdateWrapper = new LambdaUpdateWrapper<>();
+        lambdaUpdateWrapper.eq(LoginUser::getLoginId, userId);
         // 根据id查询出用户
-        OrdinaryUser ordinaryUser = userDao.selectOne(lambdaUpdateWrapper);
-        lambdaUpdateWrapper.set(OrdinaryUser::getUserStatus, "启用");
+        LoginUser ordinaryUser = userDao.selectOne(lambdaUpdateWrapper);
+        lambdaUpdateWrapper.set(LoginUser::getLoginStatus, "启用");
 
         // 构造操作结果
         ResultVo resultVo = new ResultVo();
@@ -127,10 +128,10 @@ public class OrdinaryUserServiceImpl implements OrdinaryUserService {
 
     @Override
     public void test() {
-        OrdinaryUser ordinaryUser = new OrdinaryUser();
+        LoginUser ordinaryUser = new LoginUser();
         try {
-            ordinaryUser.setUserId("1111");
-            ordinaryUser.setUserAge(20);
+            ordinaryUser.setLoginId("1111");
+//            ordinaryUser.setLoginAge(20);
             int insert = userDao.insert(ordinaryUser);
             System.out.println(insert);
         }catch (Exception e) {

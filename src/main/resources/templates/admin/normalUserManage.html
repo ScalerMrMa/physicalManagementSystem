@@ -18,7 +18,7 @@
   <div class="demoTable">
     &nbsp;&nbsp;用户查询：
     <div class="layui-inline">
-      <input class="layui-input" id="searchUserName" name="username" autocomplete="off" placeholder="请输入用户名查询">
+      <input class="layui-input" id="searchUserName" name="loginUsername" autocomplete="off" placeholder="请输入用户名查询">
     </div>
     <button id="searchBtn" type="button" class="layui-btn layui-btn-normal" data-type="reload" lay-filter="data-search-btn">搜索</button>
   </div>
@@ -36,7 +36,7 @@
       <div class="layui-form-item">
         <label class="layui-form-label">用户ID</label>
         <div class="layui-input-block">
-          <input type="text" name="userId" required lay-verify="required" autoComplete="no"
+          <input type="text" name="loginId" required lay-verify="required" autoComplete="no"
                  disabled style="color: darkgray"
                  class="layui-input">
         </div>
@@ -44,7 +44,7 @@
       <div class="layui-form-item">
         <label class="layui-form-label">用户名</label>
         <div class="layui-input-block">
-          <input type="text" name="username" required lay-verify="required" autoComplete="on"
+          <input type="text" name="loginUsername" required lay-verify="required" autoComplete="on"
                  disabled style="color: darkgray"
                  class="layui-input">
         </div>
@@ -52,7 +52,7 @@
       <div class="layui-form-item">
         <label class="layui-form-label">电子邮箱</label>
         <div class="layui-input-block">
-          <input type="text" name="userEmail" required lay-verify="required"
+          <input type="text" name="loginEmail" required lay-verify="required"
                  disabled style="color: darkgray"
                  autoComplete="on" class="layui-input">
         </div>
@@ -60,7 +60,7 @@
       <div class="layui-form-item">
         <label class="layui-form-label">电话</label>
         <div class="layui-input-block">
-          <input type="text" name="userPhone" required lay-verify="required"
+          <input type="text" name="loginPhone" required lay-verify="required"
                  disabled style="color: darkgray"
                  autoComplete="no" class="layui-input">
         </div>
@@ -68,36 +68,36 @@
       <div class="layui-form-item">
         <label class="layui-form-label">姓名</label>
         <div class="layui-input-block">
-          <input type="text" name="userRealName" required lay-verify="required"
+          <input type="text" name="loginRealName" required lay-verify="required"
                  autoComplete="no"
                  disabled style="color: darkgray"
                  class="layui-input">
         </div>
       </div>
-      <div class="layui-form-item">
-        <label class="layui-form-label">性别</label>
-        <div class="layui-input-block">
-          <input type="text" name="userGender" required lay-verify="required"  autoComplete="on"
-                 disabled style="color: darkgray"
-                 class="layui-input">
-        </div>
-      </div>
-      <div class="layui-form-item">
-        <label class="layui-form-label">身份证号码</label>
-        <div class="layui-input-block">
-          <input type="text" name="userIdentity" required lay-verify="required"
-                 disabled style="color: darkgray"
-                 class="layui-input">
-        </div>
-      </div>
-      <div class="layui-form-item">
-        <label class="layui-form-label">年龄</label>
-        <div class="layui-input-block">
-          <input type="text" name="userAge" required lay-verify="required"
-                 disabled style="color: darkgray"
-                 class="layui-input">
-        </div>
-      </div>
+<!--      <div class="layui-form-item">-->
+<!--        <label class="layui-form-label">性别</label>-->
+<!--        <div class="layui-input-block">-->
+<!--          <input type="text" name="userGender" required lay-verify="required"  autoComplete="on"-->
+<!--                 disabled style="color: darkgray"-->
+<!--                 class="layui-input">-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div class="layui-form-item">-->
+<!--        <label class="layui-form-label">身份证号码</label>-->
+<!--        <div class="layui-input-block">-->
+<!--          <input type="text" name="userIdentity" required lay-verify="required"-->
+<!--                 disabled style="color: darkgray"-->
+<!--                 class="layui-input">-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div class="layui-form-item">-->
+<!--        <label class="layui-form-label">年龄</label>-->
+<!--        <div class="layui-input-block">-->
+<!--          <input type="text" name="userAge" required lay-verify="required"-->
+<!--                 disabled style="color: darkgray"-->
+<!--                 class="layui-input">-->
+<!--        </div>-->
+<!--      </div>-->
     </form>
   </div>
 </script>
@@ -123,22 +123,22 @@
       ,cols: [
         [
           {type: 'checkbox', fixed: 'left'}
-          ,{field:'userId', title:'ID', width:80,}
-          ,{field:'username', title:'用户名', width:100 }
-          ,{field:'userEmail', title:'电子邮箱', width:150}
-          ,{field:'userPhone', title:'电话', width:100}
-          ,{field:'userRealName', title:'姓名', width:100}
-          ,{field:'userGender', title:'性别',width: 50}
-          ,{field:'userIdentity', title:'身份号码', width:120}
-          ,{field:'userAge', title:'年龄', width:50}
-          ,{field:'userCreateTime', title:'用户创建时间', width:120}
-          ,{field:'userCreateTime', title:'近期修改时间', width:120}
-          ,{field:'userStatus', title:'状态', width:80}
+          ,{field:'loginId', title:'ID', width:80,}
+          ,{field:'loginUsername', title:'用户名', width:100 }
+          ,{field:'loginEmail', title:'电子邮箱', width:150}
+          ,{field:'loginPhone', title:'电话', width:100}
+          ,{field:'loginRealName', title:'姓名', width:100}
+          // ,{field:'loginGender', title:'性别',width: 50}
+          // ,{field:'loginIdentity', title:'身份号码', width:120}
+          // ,{field:'loginAge', title:'年龄', width:50}
+          ,{field:'loginCreateTime', title:'用户创建时间', width:120}
+          ,{field:'loginCreateTime', title:'近期修改时间', width:120}
+          ,{field:'loginStatus', title:'状态', width:80}
           ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:200}
         ]
       ]
       ,page: true
-      ,limit:3
+      ,limit:10
       ,request: {
         pageName: 'page' // 指定请求参数中当前页码的字段名，默认为page
         ,limitName: 'limit' // 指定请求参数中每页数据量的字段名，默认为limit
@@ -159,7 +159,7 @@
           icon: 2,
           time: 1000,
         },function (){
-          parent.location.reload();
+          location.reload();
         });
         // tableIns.reload();
         layer.close(index);
@@ -179,14 +179,14 @@
           success: function(layero, index) {
             form.val('showInfoForm', {
               // 赋值
-              "userId": obj.data.userId,
-              "username": obj.data.username,
-              "userEmail": obj.data.userEmail,
-              "userPhone": obj.data.userPhone,
-              "userRealName": obj.data.userRealName,
-              "userGender": obj.data.userGender,
-              "userIdentity": obj.data.userIdentity,
-              "userAge": obj.data.userAge
+              "loginId": obj.data.loginId,
+              "loginUsername": obj.data.loginUsername,
+              "loginEmail": obj.data.loginEmail,
+              "loginPhone": obj.data.loginPhone,
+              "loginRealName": obj.data.loginRealName,
+              // "loginGender": obj.data.userGender,
+              // "loginIdentity": obj.data.userIdentity,
+              // "loginAge": obj.data.loginAge
             });
           }
         });
@@ -196,7 +196,7 @@
             url: '/manage/forbidUser',
             type: 'PUT',
             data: {
-              userId: obj.data.userId,
+              loginId: obj.data.loginId,
             },
             success: function(resultVo) {
               layer.msg(resultVo.msg,{
@@ -226,7 +226,7 @@
             url: 'manage/activeUser',
             type: 'PUT',
             data: {
-              userId: obj.data.userId,
+              loginId: obj.data.loginId,
             },
             success: function(resultVo) {
               console.log(obj.data.userId);
@@ -255,11 +255,11 @@
     });
 
     $('#searchBtn').on('click', function(){
-      var username = $('#searchUserName').val();
+      var loginUsername = $('#searchUserName').val();
       // 执行搜索，并重载表格数据
       table.reload('userInfo', {
         where: {
-          username: username
+          loginUsername: loginUsername
         },
         page: {
           curr: 1 //重新从第 1 页开始

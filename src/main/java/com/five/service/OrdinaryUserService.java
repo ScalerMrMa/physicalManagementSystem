@@ -1,6 +1,6 @@
 package com.five.service;
 
-import com.five.domain.OrdinaryUser;
+import com.five.domain.LoginUser;
 import com.five.vo.DataVo;
 import com.five.vo.ResultVo;
 
@@ -12,7 +12,7 @@ import com.five.vo.ResultVo;
 public interface OrdinaryUserService {
 
     // 查询用户信息
-    public DataVo<OrdinaryUser> getNormalUsers(String username);
+    public DataVo<LoginUser> getNormalUsers(String username);
     // 修改用户信息(此处禁用用户)
     public ResultVo forbidNormalUser(String userId);
     // 更新用户状态(此处启用用户状态)
