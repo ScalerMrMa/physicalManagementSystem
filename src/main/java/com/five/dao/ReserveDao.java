@@ -1,7 +1,7 @@
 package com.five.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.five.domain.Material;
+import com.five.domain.Reserve;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -10,5 +10,5 @@ import org.apache.ibatis.annotations.Mapper;
  * @description
  */
 @Mapper
-public interface MaterialDao extends BaseMapper<Material> {
+public interface ReserveDao extends BaseMapper<Reserve> {
 }

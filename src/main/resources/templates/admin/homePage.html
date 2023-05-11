@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>主页一</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/layui@2.6.8/dist/css/layui.css">
+    <!--    引入echarts文件-->
+<!--    <script th:src="@{/js/echarts.js}"></script>-->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.1.2/dist/echarts.min.js"></script>
+    <script th:src="@{/js/jquery.js}"></script>
+</head>
+<style>
+    .layui-top-box {padding:40px 20px 20px 20px;color:#fff}
+    .panel {margin-bottom:17px;background-color:#fff;border:1px solid transparent;border-radius:3px;-webkit-box-shadow:0 1px 1px rgba(0,0,0,.05);box-shadow:0 1px 1px rgba(0,0,0,.05)}
+    .panel-body {padding:15px}
+    .panel-title {margin-top:0;margin-bottom:0;font-size:14px;color:inherit}
+    .label {display:inline;padding:.2em .6em .3em;font-size:75%;font-weight:700;line-height:1;color:#fff;text-align:center;white-space:nowrap;vertical-align:baseline;border-radius:.25em;margin-top: .3em;}
+    .layui-red {color:red}
+    .main_btn > p {height:40px;}
+</style>
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main layui-top-box">
+        <div class="layui-card">
+            <div class="layui-card-header">
+                <h2>总览信息</h2>
+            </div>
+            <div class="layui-card-body" style="text-align: center">
+                <div class="layui-row layui-col-space5">
+
+                    <div class="layui-col-md3">
+                        <div class="col-xs-6 col-md-3">
+                            <div class="panel layui-bg-cyan">
+                                <div class="panel-body text-center">
+                                    <div class="panel-title">
+                                        <span class="label pull-right layui-bg-blue">实时</span>
+                                        <h3>普通用户统计</h3>
+                                    </div>
+                                    <div class="panel-content">
+                                        <h1 class="no-margins" th:text="${normalUserCount}"></h1>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="layui-col-md3">
+                        <div class="col-xs-6 col-md-3">
+                            <div class="panel layui-bg-blue">
+                                <div class="panel-body">
+                                    <div class="panel-title">
+                                        <span class="label pull-right layui-bg-cyan">实时</span>
+                                        <h3>员工统计</h3>
+                                    </div>
+                                    <div class="panel-content">
+                                        <h1 class="no-margins" th:text="${innerUserCount}"></h1>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="layui-col-md3">
+                        <div class="col-xs-6 col-md-3">
+                            <div class="panel layui-bg-green">
+                                <div class="panel-body">
+                                    <div class="panel-title">
+                                        <span class="label pull-right layui-bg-orange">实时</span>
+                                        <h3>部门统计</h3>
+                                    </div>
+                                    <div class="panel-content">
+                                        <h1 class="no-margins" th:text="${departmentCount}"></h1>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="layui-col-md3">
+                        <div class="col-xs-6 col-md-3">
+                            <div class="panel layui-bg-orange">
+                                <div class="panel-body">
+                                    <div class="panel-title">
+                                        <span class="label pull-right layui-bg-green">实时</span>
+                                        <h3>订单统计</h3>
+                                    </div>
+                                    <div class="panel-content">
+                                        <h1 class="no-margins" th:text="${reserveCount}"></h1>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-card">
+            <div class="layui-card-header">
+                <h3>数据图表</h3>
+            </div>
+            <div class="layui-card-body">
+                <!--图表展示-->
+                <div id="main" style="width: 100%;height:80vh;"></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script th:src="@{/layui/layui.js}" charset="utf-8"></script>
+
+<script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main'));
+
+    // 指定图表的配置项和数据
+    option = {
+        legend: {},
+        tooltip: {
+            trigger: 'axis',
+            showContent: false
+        },
+        dataset: {
+            source: [
+                ['product', '2018', '2019', '2020', '2021', '2022', '2023'],
+                ['普通用户', 200, 250, 223, 300, 450, 53],
+                ['员工', 53, 65, 125, 102, 144, 302],
+                ['科室', 11, 14, 22, 20, 27, 35],
+                ['订单', 120, 230, 101, 155, 122, 300]
+            ]
+        },
+        xAxis: { type: 'category' },
+        yAxis: { gridIndex: 0 },
+        grid: { top: '55%' },
+        series: [
+            {
+                type: 'line',
+                smooth: true,
+                seriesLayoutBy: 'row',
+                emphasis: { focus: 'series' }
+            },
+            {
+                type: 'line',
+                smooth: true,
+                seriesLayoutBy: 'row',
+                emphasis: { focus: 'series' }
+            },
+            {
+                type: 'line',
+                smooth: true,
+                seriesLayoutBy: 'row',
+                emphasis: { focus: 'series' }
+            },
+            {
+                type: 'line',
+                smooth: true,
+                seriesLayoutBy: 'row',
+                emphasis: { focus: 'series' }
+            },
+            {
+                type: 'pie',
+                id: 'pie',
+                radius: '30%',
+                center: ['50%', '25%'],
+                emphasis: {
+                    focus: 'self'
+                },
+                label: {
+                    formatter: '{b}: {@2018} ({d}%)'
+                },
+                encode: {
+                    itemName: 'product',
+                    value: '2018',
+                    tooltip: '2018'
+                }
+            }
+        ]
+    };
+    myChart.on('updateAxisPointer', function (event) {
+        const xAxisInfo = event.axesInfo[0];
+        if (xAxisInfo) {
+            const dimension = xAxisInfo.value + 1;
+            myChart.setOption({
+                series: {
+                    id: 'pie',
+                    label: {
+                        formatter: '{b}: {@[' + dimension + ']} ({d}%)'
+                    },
+                    encode: {
+                        value: dimension,
+                        tooltip: dimension
+                    }
+                }
+            });
+        }
+    });
+    myChart.setOption(option);
+</script>
+
+</body>
+</html>

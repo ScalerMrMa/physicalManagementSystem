@@ -1,6 +1,9 @@
 package com.five.domain;
 
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
 
 /**
  * @author MrMa
@@ -9,14 +12,19 @@ import lombok.Data;
  */
 @Data
 public class Material {
+    private Integer materialId;
     private String materialName;
     private String materialCategory;
     private String materialModel;
     private String materialLocation;
-    private String materialCounts;
-    private String materialRecentInroomTime;        // 入库时间
-    private String materialExpirationTime;
+    private Integer materialCounts;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate materialRecentInroomTime;        // 入库时间
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate materialExpirationTime;
     private String materialManufacturer;
     private String materialProvider;
     private String materialRemark;
+    private Double materialPrice;
+    private String materialStatus;
 }

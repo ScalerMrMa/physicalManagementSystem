@@ -11,6 +11,7 @@ spring:
     suffix: .html
     cache: false
     mode: HTML
+
 #  jackson:
 #    date-format: yyyy-MM-dd
 

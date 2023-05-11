@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+    <script th:src="@{/layui/layui.js}" charset="utf-8"></script>
+</head>
+<body>
+
+<div class="layui-col-md10" style="margin-left: 100px; margin-top: 20px" >
+    <form class="layui-form" action="" lay-filter="editForm">
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户名</label>
+            <div class="layui-input-inline">
+                <input type="text" name="innerUserName" th:value="${innerUserName}" required lay-verify="required" placeholder="请输入用户名" autoComplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">性别</label>
+            <div class="layui-input-inline">
+                <input type="text" name="innerUserGender" th:value="${innerUserGender}" required lay-verify="required" placeholder="请输入用户名" autoComplete="off"
+                       class="layui-input">
+                </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">电话号码</label>
+            <div class="layui-input-inline">
+                <input type="tel" name="innerUserPhone" th:value="${innerUserPhone}" required lay-verify="required" placeholder="请输入电话"
+                       autoComplete="on" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">电子邮箱</label>
+            <div class="layui-input-inline">
+                <input type="email" name="innerUserEmail" th:value="${innerUserEmail}" placeholder="请输入电子邮箱"
+                       autoComplete="on" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item" style="margin-left: 115px">
+            <div class="layui-input-inline" style="text-align: center">
+                <button class="layui-btn" lay-submit lay-filter="edit-btn-form">提交</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    layui.use(['form','jquery','layer'], function() {
+        var layer = layui.layer
+            , $ = layui.jquery, table = layui.table;
+        var form = layui.form;
+
+        form.on('submit(edit-btn-form)', function (data) {
+            $.post("updatePerson", data.field, function (resultVo) {
+                if (resultVo.code === 0) {
+                    layer.msg(resultVo.msg,{
+                        icon: 1,
+                        time: 1000  // 1秒关闭
+                    }, function (){
+                        // 一秒以后进行页面重新刷新
+                        location.reload();
+                    });
+                }else if (resultVo.code === 2) {
+                    layer.msg(resultVo.msg,{
+                        icon: 2,
+                        time: 1000  // 1秒关闭
+                    }, function (){
+                        // 一秒以后进行页面重新刷新
+                        location.reload();
+                    });
+                }else if (resultVo.code === 3) {
+                    layer.msg(resultVo.msg,{
+                        icon: 2,
+                        time: 1000  // 1秒关闭
+                    }, function (){
+                        // 一秒以后进行页面重新刷新
+                        location.reload();
+                    });
+                }
+            }).fail(function(jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR.responseText); // 将错误信息打印到控制台
+                layer.alert('修改失败!', {icon: 2});
+            });
+            // 阻止form表单提示
+            return false;
+        })
+
+    });
+</script>
+</body>
+</html>

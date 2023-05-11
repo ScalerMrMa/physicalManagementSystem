@@ -12,7 +12,7 @@ public class Notion {
    private String notionId;
    private String notionTitle;
    private String notionContent;
-   private String notionCreatTime;
+   private String notionCreateTime;
    private String notionPublisher;
    private String notionEditor;
    private String notionEditTime;

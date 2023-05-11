@@ -62,7 +62,7 @@ public class OrdinaryUserServiceImpl implements OrdinaryUserService {
     }
 
     /**
-     *
+     *  禁用用户
      * @return
      */
     @Override
@@ -77,17 +77,25 @@ public class OrdinaryUserServiceImpl implements OrdinaryUserService {
         // 构造操作结果
         ResultVo resultVo = new ResultVo();
         // 更新字段
-        try {
-            int update = userDao.update(ordinaryUser, lambdaUpdateWrapper);
-            if (update != 0) {
-                resultVo.setCode(0);
-                resultVo.setMsg("已禁用！");
-            }else {
-                resultVo.setCode(-1);
-                resultVo.setMsg("禁用失败！");
+        try  {
+            if (ordinaryUser.getLoginStatus().equals("禁用")) {
+                resultVo.setCode(1);
+                resultVo.setMsg("当前用户已禁用！");
+            }else{
+                lambdaUpdateWrapper.set(LoginUser::getLoginStatus, "禁用");
+                int update = userDao.update(null, lambdaUpdateWrapper);
+                if (update != 0) {
+                    resultVo.setCode(0);
+                    resultVo.setMsg("已禁用！");
+                }else {
+                    resultVo.setCode(2);
+                    resultVo.setMsg("操作失败！");
+                }
             }
         }catch (Exception e) {
             e.printStackTrace();
+            resultVo.setCode(2);
+            resultVo.setMsg("禁用失败！");
         }
 
         return resultVo;
@@ -105,37 +113,43 @@ public class OrdinaryUserServiceImpl implements OrdinaryUserService {
         lambdaUpdateWrapper.eq(LoginUser::getLoginId, userId);
         // 根据id查询出用户
         LoginUser ordinaryUser = userDao.selectOne(lambdaUpdateWrapper);
-        lambdaUpdateWrapper.set(LoginUser::getLoginStatus, "启用");
 
         // 构造操作结果
         ResultVo resultVo = new ResultVo();
         // 更新字段
         try {
-            int update = userDao.update(ordinaryUser, lambdaUpdateWrapper);
-            if (update != 0) {
-                resultVo.setCode(0);
-                resultVo.setMsg("已启用！");
-            }else {
-                resultVo.setCode(-1);
-                resultVo.setMsg("启用失败！");
+            if (ordinaryUser.getLoginStatus().equals("启用")) {
+                resultVo.setCode(1);
+                resultVo.setMsg("当前用户已启用！");
+            }else{
+                lambdaUpdateWrapper.set(LoginUser::getLoginStatus, "启用");
+                int update = userDao.update(ordinaryUser, lambdaUpdateWrapper);
+                if (update != 0) {
+                    resultVo.setCode(0);
+                    resultVo.setMsg("已启用！");
+                }else {
+                    resultVo.setCode(2);
+                    resultVo.setMsg("启用失败！");
+                }
             }
+
         }catch (Exception e) {
             e.printStackTrace();
+            resultVo.setCode(2);
+            resultVo.setMsg("启用失败！");
         }
 
         return resultVo;
     }
 
+    /**
+     * 获取普通用户数量
+     * @return
+     */
     @Override
-    public void test() {
-        LoginUser ordinaryUser = new LoginUser();
-        try {
-            ordinaryUser.setLoginId("1111");
-//            ordinaryUser.setLoginAge(20);
-            int insert = userDao.insert(ordinaryUser);
-            System.out.println(insert);
-        }catch (Exception e) {
-            System.out.println(e);
-        }
+    public Integer getNormalUserCounts() {
+        Integer normalCounts = userDao.selectCount(null);
+        return normalCounts;
     }
+
 }

@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html>
 <head>
     <meta charset="utf-8">
@@ -12,164 +13,112 @@
 </head>
 <body>
 <!--表格-->
-<table class="layui-hide" id="innerUserInfo" lay-filter="test"></table>
-<!--头工具栏-->
+<table class="layui-hide" id="notionInfo" lay-filter="test"></table>
+<!--搜索框-->
 <script type="text/html" id="toolbarDemo">
-    <div class="layui-btn-container">
-        <button id="addBtn" type="button" class="layui-btn layui-btn-primary" lay-event="addDepartment">
-            <i class="layui-icon layui-icon-add-circle-fine">&nbsp;&nbsp;新增</i>
+    <div class="layui-btn-container" style="float: left">
+        <button id="addBtn" type="button" class="layui-btn layui-btn-primary" lay-event="addNotion">
+            <i class="layui-icon layui-icon-add-circle-fine">&nbsp;&nbsp;发布</i>
+        </button>
+        <button id="del" type="button" class="layui-btn layui-btn-danger delAll_btn" lay-event="expireMany">
+            <i class="layui-icon layui-icon-close">&nbsp;&nbsp;批量失效</i>
+        </button>
+    </div>
+    <div class="demoTable">
+        &nbsp;&nbsp;公告查询：
+        <div class="layui-inline">
+            <input class="layui-input" id="searchNotionTitle" name="innerUserName" autocomplete="off" placeholder="请输入公告标题查询">
+        </div>
+        <button id="searchBtn" type="button" class="layui-btn layui-btn-primary" data-type="reload" lay-filter="data-search-btn">
+            <i class="layui-icon layui-icon-search">&nbsp;&nbsp;搜索</i>
         </button>
     </div>
 </script>
 <!--行操作-->
 <script type="text/html" id="barDemo">
     <a id="editBtn" class="layui-btn layui-btn-xs" lay-event="edit">修改</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="forbid">禁用</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="expire">失效</a>
 </script>
-<!--添加表单-->
-<script type="text/html" id="add-department">
+<!--发布公告-->
+<script type="text/html" id="add-notionInfo">
     <div class="layui-col-md10" style="margin-left: 35px; margin-top: 20px">
-        <form class="layui-form" action="">
+        <form class="layui-form" action="" >
+
             <div class="layui-form-item">
-                <label class="layui-form-label">科室ID</label>
+                <label class="layui-form-label">标题</label>
                 <div class="layui-input-block">
-                    <input type="text" name="departmentId" required lay-verify="required" placeholder="请输入科室ID" autoComplete="off"
+                    <input type="text" name="notionTitle" required lay-verify="required"  placeholder="请输入标题" autoComplete="off"
                            class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item">
-                <label class="layui-form-label">科室名称</label>
+                <label class="layui-form-label">发布者</label>
                 <div class="layui-input-block">
-                    <input type="text" name="departmentName" required lay-verify="required" placeholder="请输入科室名称" autoComplete="off"
-                           class="layui-input">
-                </div>
-            </div>
-
-            <div class="layui-form-item">
-                <label class="layui-form-label">科室邮箱</label>
-                <div class="layui-input-block">
-                    <input type="text" name="departmentEmail" lay-verify="email" placeholder="请输入科室邮箱" autoComplete="on" class="layui-input">
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">科室电话</label>
-                <div class="layui-input-block">
-                    <input type="tel" name="departmentPhone" required lay-verify="phone" placeholder="请输入科室电话" autoComplete="on" class="layui-input">
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">科室负责人</label>
-                <div class="layui-input-block">
-                    <input type="text" name="departmentHead" required lay-verify="required" placeholder="请输入科室负责人" autoComplete="off"
+                    <input type="text" name="notionPublisher" required lay-verify="required" placeholder="请输入发布者" autoComplete="off"
                            class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item">
-                <label class="layui-form-label">科室简介</label>
+                <label class="layui-form-label">编辑者</label>
                 <div class="layui-input-block">
-                    <textarea name="departmentDescription" placeholder="请输入内容" class="layui-textarea"></textarea>
-
-                </div>
-            </div>
-
-            <div class="layui-form-item">
-                <label class="layui-form-label">状态</label>
-                <div class="layui-input-inline">
-                    <select name="departmentStatus" lay-verify="required" lay-search>
-                        <option value=""></option>
-                        <option value="启用">启用</option>
-                        <option value="待启用">待启用</option>
-                    </select>
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">科室创建时间</label>
-                <div class="layui-input-block">
-                    <input type="date" name="departmentCreateTime" required lay-verify="required" autoComplete="off"
+                    <input type="text" name="notionEditor" placeholder="请输入编辑者" autoComplete="off"
                            class="layui-input">
                 </div>
             </div>
-<!--            <div class="layui-form-item">-->
-<!--                <label class="layui-form-label">科室更新时间</label>-->
-<!--                <div class="layui-input-block">-->
-<!--                    <input type="date" name="departmentUpdateTime"  autoComplete="off"-->
-<!--                           class="layui-input">-->
-<!--                </div>-->
-<!--            </div>-->
-
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">公告</label>
+                <div class="layui-input-block">
+                    <textarea name="notionContent" placeholder="请输入内容" class="layui-textarea" style="height: 300px"></textarea>
+                </div>
+            </div>
             <div class="layui-form-item">
                 <div class="layui-input-block" style="text-align: center">
-                    <button class="layui-btn" lay-submit lay-filter="addForm">提交</button>
+                    <button class="layui-btn" lay-submit lay-filter="add-Notion">提交</button>
                     <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                 </div>
             </div>
         </form>
     </div>
 </script>
-
 <!--编辑表单-->
-<script type="text/html" id="edit-department">
+<script type="text/html" id="edit-notion">
     <div class="layui-col-md10" style="margin-left: 35px; margin-top: 20px">
-        <form class="layui-form" action="" lay-filter="edit-Form">
+        <form class="layui-form" action="" lay-filter="editForm">
             <div class="layui-form-item">
-                <label class="layui-form-label">科室ID</label>
+                <label class="layui-form-label">ID</label>
                 <div class="layui-input-block">
-                    <input type="text" name="departmentId" required lay-verify="required" placeholder="请输入科室ID" autoComplete="off"
+                    <input type="text" name="notionId" required lay-verify="required" autoComplete="off"
+                           disabled style="color: darkgray"
                            class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item">
-                <label class="layui-form-label">科室名称</label>
+                <label class="layui-form-label">标题</label>
                 <div class="layui-input-block">
-                    <input type="text" name="departmentName" required lay-verify="required" placeholder="请输入科室名称" autoComplete="off"
-                           class="layui-input">
-                </div>
-            </div>
-
-            <div class="layui-form-item">
-                <label class="layui-form-label">科室邮箱</label>
-                <div class="layui-input-block">
-                    <input type="text" name="departmentEmail" lay-verify="email" placeholder="请输入科室邮箱" autoComplete="on" class="layui-input">
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">科室电话</label>
-                <div class="layui-input-block">
-                    <input type="tel" name="departmentPhone" required lay-verify="phone" placeholder="请输入科室电话" autoComplete="on" class="layui-input">
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">科室负责人</label>
-                <div class="layui-input-block">
-                    <input type="text" name="departmentHead" required lay-verify="required" placeholder="请输入科室负责人" autoComplete="off"
+                    <input type="text" name="notionTitle" required lay-verify="required"  placeholder="请输入标题" autoComplete="off"
                            class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item">
-                <label class="layui-form-label">科室简介</label>
+                <label class="layui-form-label">发布者</label>
                 <div class="layui-input-block">
-                    <textarea name="departmentDescription" placeholder="请输入内容" class="layui-textarea"></textarea>
-
+                    <input type="text" name="notionPublisher" required lay-verify="required" placeholder="请输入发布者" autoComplete="off"
+                           class="layui-input">
                 </div>
             </div>
-
             <div class="layui-form-item">
-                <label class="layui-form-label">状态</label>
-                <div class="layui-input-inline">
-                    <select name="departmentStatus" lay-verify="required" lay-search>
-                        <option value=""></option>
-                        <option value="启用">启用</option>
-                        <option value="待启用">待启用</option>
-                    </select>
+                <label class="layui-form-label">编辑者</label>
+                <div class="layui-input-block">
+                    <input type="text" name="notionEditor" placeholder="请输入编辑者" autoComplete="off"
+                           class="layui-input">
                 </div>
             </div>
-<!--            <div class="layui-form-item">-->
-<!--                <label class="layui-form-label">科室创建时间</label>-->
-<!--                <div class="layui-input-block">-->
-<!--                    <input type="date" name="departmentCreateTime" required lay-verify="required" autoComplete="off"-->
-<!--                           class="layui-input">-->
-<!--                </div>-->
-<!--            </div>-->
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">公告</label>
+                <div class="layui-input-block">
+                    <textarea name="notionContent" placeholder="请输入内容" class="layui-textarea" style="height: 300px"></textarea>
+                </div>
+            </div>
             <div class="layui-form-item">
                 <div class="layui-input-block" style="text-align: center">
                     <button class="layui-btn" lay-submit lay-filter="edit-btn-form">提交</button>
@@ -185,31 +134,28 @@
         var layer = layui.layer
             ,$ = layui.jquery,table = layui.table;
         var form = layui.form;
-
         table.render({
-            elem: '#innerUserInfo'
-            ,url: '/manage/getDepartments'
+            elem: '#notionInfo'
+            ,url: '/manage/getNotions'
             ,toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
             ,defaultToolbar: ['filter', 'exports', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
                 title: '提示'
                 ,layEvent: 'LAYTABLE_TIPS'
                 ,icon: 'layui-icon-tips'
             }]
-            ,title: '科室信息表'
+            ,title: '工作人员信息表'
             ,cols: [
                 [
                     {type: 'checkbox', fixed: 'left'}
-                    ,{field:'departmentNo', title:'序号', width:80,}
-                    ,{field:'departmentId', title:'科室ID', width:80,}
-                    ,{field:'departmentName', title:'科室名称', width:80 }
-                    ,{field:'departmentEmail', title:'科室邮箱', width:150}
-                    ,{field:'departmentPhone', title:'科室电话', width:120}
-                    ,{field:'departmentHead', title:'科室负责人', width:80}
-                    ,{field:'departmentDescription', title:'科室简介', width:150}
-                    ,{field:'departmentCreateTime', title:'科室创建时间', width: 120}
-                    ,{field:'departmentUpdateTime', title:'科室更新时间', width:120}
-                    ,{field:'departmentStatus', title:'状态', width:80}
-                    ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:150}
+                    ,{field:'notionId', title:'ID', width:120,}
+                    ,{field:'notionPublisher', title:'发布者', width:100}
+                    ,{field:'notionEditor', title:'编辑者', width:100}
+                    ,{field:'notionTitle', title:'标题', width:120,}
+                    ,{field:'notionContent', title:'内容', width:120 }
+                    ,{field:'notionCreateTime', title:'发布时间', width:100}
+                    ,{field:'notionEditTime', title:'编辑时间', width:150}
+                    ,{field:'notionStatus', title:'状态', width: 150}
+                    ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:120}
                 ]
             ]
             ,page: true
@@ -229,13 +175,13 @@
         table.on('toolbar(test)', function(obj){
             var checkStatus = table.checkStatus(obj.config.id);
             switch(obj.event){
-                case 'addDepartment':
+                case 'addNotion':
                     var data = checkStatus.data;
                     layer.open({
-                        title: "添加科室信息",
+                        title: "添加公告信息",
                         type: 1,
-                        area: ['660px', '600px'],
-                        content: $('#add-department').html(),
+                        area: ['100%', '100%'],
+                        content: $('#add-notionInfo').html(),
                         // 添加了这段后，单选框和下拉框才能正常显示
                         success: function(layero, index) {
                             // 在打开弹窗之后，手动渲染表单
@@ -246,7 +192,73 @@
                         }
                     });
                     break;
+                case 'expireMany':
+                    $(".delAll_btn").click(function () {
+                        var checkStatus = table.checkStatus('notionInfo'),
+                            data = checkStatus.data,
+                            notionIds = "";
+                        if (data.length > 0) {
+                            for (var i in data) {
+                                notionIds += data[i].notionId + ",";
+                            }
 
+                            layer.confirm('确定让选中的公告失效？', {icon: 3, title: '提示信息'}, function (index) {
+                                $.ajax({
+                                    url: '/manage/expireNotions',
+                                    type: 'PUT',
+                                    data: {
+                                        notionIds: notionIds
+                                    },
+                                    success: function(resultVo) {
+                                        if (resultVo.code === 0) {
+                                            layer.msg(resultVo.msg,{
+                                                icon: 1,
+                                                time: 1000  // 1秒关闭
+                                            }, function (){
+                                                // 一秒以后进行页面重新刷新
+                                                location.reload();
+                                            });
+                                        }else if (resultVo.code === 1) {
+                                            layer.msg(resultVo.msg,{
+                                                icon: 0,
+                                                time: 1000  // 1秒关闭
+                                            }, function (){
+                                                // 一秒以后进行页面重新刷新
+                                                location.reload();
+                                            });
+                                        }else if (resultVo.code === 3) {
+                                            layer.msg(resultVo.msg,{
+                                                icon: 2,
+                                                time: 1000  // 1秒关闭
+                                            }, function (){
+                                                // 一秒以后进行页面重新刷新
+                                                location.reload();
+                                            });
+                                        }
+                                        // tableIns.reload();
+                                        layer.close(index);
+                                    },
+                                    error: function (resultVo) {
+                                        console.log(data)
+                                        layer.msg(resultVo.msg,{
+                                            icon: 1,
+                                            time: 1000,
+                                        },function (){
+                                            location.reload();
+                                        });
+                                        // tableIns.reload();
+                                        layer.close(index);
+                                    }
+
+                                });
+                            })
+                        } else {
+                            layer.msg("请选择需要失效的公告！");
+                        }
+                    });
+
+                    break;
+                //自定义头工具栏右侧图标 - 提示
                 case 'LAYTABLE_TIPS':
                     layer.alert('我还没有想好说什么咯！');
                     break;
@@ -259,11 +271,11 @@
             if (obj.event === 'edit') {
                 // 弹出表单进行修改
                 layer.open({
-                    elem: "#edit-department",
-                    title: "修改工作人员信息",
+                    elem: "#edit-notion",
+                    title: "修改公告信息",
                     type: 1,
                     area: ['660px', '550px'],
-                    content: $('#edit-department').html(),
+                    content: $('#edit-notion').html(),
 
                     success: function(layero, index) {
                         // 在打开弹窗之后，手动渲染表单
@@ -272,17 +284,13 @@
                             form.render();
                         });
 
-                        form.val('edit-Form', {
+                        form.val('editForm', {
                             // 赋值
-                            "departmentNo": obj.data.departmentNo,
-                            "departmentId": obj.data.departmentId,
-                            "departmentName": obj.data.departmentName,
-                            "departmentEmail": obj.data.departmentEmail,
-                            "departmentPhone": obj.data.departmentPhone,
-                            "departmentHead": obj.data.departmentHead,
-                            "departmentDescription": obj.data.departmentDescription,
-                            "departmentCreateTime": obj.data.departmentCreateTime,
-                            "departmentStatus": obj.data.departmentStatus
+                            "notionId": obj.data.notionId,
+                            "notionTitle": obj.data.notionTitle,
+                            "notionPublisher": obj.data.notionPublisher,
+                            "notionEditor": obj.data.notionEditor,
+                            "notionContent": obj.data.notionContent,
                         });
                     },
                     error: function (resultVo) {
@@ -295,13 +303,13 @@
                         layer.close(index);
                     }
                 });
-            }else if (obj.event === 'forbid') {
-                layer.confirm('确定禁用该科室？该操作不可逆！', {icon: 3, title: '提示信息'}, function(index) {
+            }else if (obj.event === 'expire') {
+                layer.confirm('确定将此公告的状态设置为失效？', {icon: 3, title: '提示信息'}, function(index) {
                     $.ajax({
-                        url: 'manage/forbidDepartment',
+                        url: 'manage/expireNotion',
                         type: 'PUT',
                         data: {
-                            departmentId: obj.data.departmentId
+                            notionId: obj.data.notionId
                         },
                         success: function(resultVo) {
                             if (resultVo.code === 0) {
@@ -346,8 +354,8 @@
             }
         });
         // 监听提交事件
-        form.on('submit(addForm)', function (data) {
-            $.post("manage/addDepartment", data.field, function (resultVo) {
+        form.on('submit(add-Notion)', function (data) {
+            $.post("manage/addNotion", data.field, function (resultVo) {
                 if (resultVo.code === 0) {
                     layer.msg(resultVo.msg,{
                         icon: 1,
@@ -380,8 +388,8 @@
             return false;
         })
         // 修改数据
-        form.on('submit(edit-btn-form)', function (data)    {
-            $.post("manage/updateDepartment", data.field, function (resultVo) {
+        form.on('submit(edit-btn-form)', function (data) {
+            $.post("manage/updateNotion", data.field, function (resultVo) {
                 if (resultVo.code === 0) {
                     layer.msg(resultVo.msg,{
                         icon: 1,
@@ -415,11 +423,11 @@
         })
         // 进行搜索操作
         $('#searchBtn').on('click', function(){
-            var username = $('#searchUserName').val();
+            var notionTitle = $('#searchNotionTitle').val();
             // 执行搜索，并重载表格数据
-            table.reload('innerUserInfo', {
+            table.reload('notionInfo', {
                 where: {
-                    innerUserName: username
+                    notionTitle: notionTitle
                 },
                 page: {
                     curr: 1 //重新从第 1 页开始

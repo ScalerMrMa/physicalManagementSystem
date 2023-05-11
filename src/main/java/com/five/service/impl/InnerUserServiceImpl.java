@@ -11,6 +11,7 @@ import com.five.vo.ResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -80,11 +81,14 @@ public class InnerUserServiceImpl implements InnerUserService {
             if (insert != 0) {
                 resultVo.setCode(0);
                 resultVo.setMsg("添加成功！");
+            }else {
+                resultVo.setCode(3);
+                resultVo.setMsg("操作失败！");
             }
         }catch (Exception e) {
             e.printStackTrace();
-            resultVo.setCode(-1);
-            resultVo.setMsg("插入失败！");
+            resultVo.setCode(3);
+            resultVo.setMsg("操作失败！");
         }
         return resultVo;
     }
@@ -99,21 +103,28 @@ public class InnerUserServiceImpl implements InnerUserService {
         LambdaUpdateWrapper<InnerUser> lambdaUpdateWrapper = new LambdaUpdateWrapper<>();
         lambdaUpdateWrapper.in(InnerUser::getInnerUserId, innerUserIds)
                 .set(InnerUser::getInnerUserStatus, "禁用");
-
+        LambdaQueryWrapper<InnerUser> innerUserLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        innerUserLambdaQueryWrapper.in(InnerUser::getInnerUserId, innerUserIds);
+        // 获取对象
+        List<InnerUser> innerUserList = innerUserDao.selectList(innerUserLambdaQueryWrapper);
         // 创建结果集
         ResultVo resultVo = new ResultVo();
         try {
+            for (InnerUser innerUser : innerUserList) {
+                if (innerUser.getInnerUserStatus().equals("禁用")) {
+                    resultVo.setCode(1);
+                    resultVo.setMsg("部分用户已经被禁用！此操作无效");
+                    return resultVo;
+                }
+            }
             int updateCount = innerUserDao.update(null, lambdaUpdateWrapper);
             if (updateCount > 0) {
                 resultVo.setCode(0);
                 resultVo.setMsg("操作成功！");
-            } else {
-                resultVo.setCode(0);
-                resultVo.setMsg("什么也没有变化！");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            resultVo.setCode(-1);
+            resultVo.setCode(3);
             resultVo.setMsg("操作失败！");
         }
         return resultVo;
@@ -131,22 +142,29 @@ public class InnerUserServiceImpl implements InnerUserService {
         lambdaUpdateWrapper.eq(InnerUser::getInnerUserId, innerUserId);
         // 根据id查询出用户
         InnerUser innerUser = innerUserDao.selectOne(lambdaUpdateWrapper);
-        lambdaUpdateWrapper.set(InnerUser::getInnerUserStatus, "禁用");
 
         // 构造操作结果
         ResultVo resultVo = new ResultVo();
         // 更新字段
         try {
-            int update = innerUserDao.update(innerUser, lambdaUpdateWrapper);
-            if (update != 0) {
-                resultVo.setCode(0);
-                resultVo.setMsg("已禁用！");
+            if (innerUser.getInnerUserStatus().equals("禁用")) {
+                resultVo.setCode(1);
+                resultVo.setMsg("当前用户已禁用！");
             }else {
-                resultVo.setCode(-1);
-                resultVo.setMsg("禁用失败！");
+                lambdaUpdateWrapper.set(InnerUser::getInnerUserStatus, "禁用");
+                int update = innerUserDao.update(innerUser, lambdaUpdateWrapper);
+                if (update != 0) {
+                    resultVo.setCode(0);
+                    resultVo.setMsg("已禁用！");
+                }else {
+                    resultVo.setCode(3);
+                    resultVo.setMsg("操作失败！");
+                }
             }
         }catch (Exception e) {
             e.printStackTrace();
+            resultVo.setCode(3);
+            resultVo.setMsg("操作失败！");
         }
 
         return resultVo;
@@ -164,30 +182,43 @@ public class InnerUserServiceImpl implements InnerUserService {
         lambdaUpdateWrapper.eq(InnerUser::getInnerUserId, userId);
         // 根据id查询出用户
         InnerUser innerUser = innerUserDao.selectOne(lambdaUpdateWrapper);
-        lambdaUpdateWrapper.set(InnerUser::getInnerUserStatus, "启用");
 
         // 构造操作结果
         ResultVo resultVo = new ResultVo();
         // 更新字段
         try {
-            int update = innerUserDao.update(innerUser, lambdaUpdateWrapper);
-            if (update != 0) {
-                resultVo.setCode(0);
-                resultVo.setMsg("已启用！");
-            }else {
-                resultVo.setCode(-1);
-                resultVo.setMsg("启用失败！");
+            if (innerUser.getInnerUserStatus().equals("启用")) {
+                resultVo.setCode(1);
+                resultVo.setMsg("当前用户已启用！");
+            }else{
+                lambdaUpdateWrapper.set(InnerUser::getInnerUserStatus, "启用");
+                int update = innerUserDao.update(null, lambdaUpdateWrapper);
+                if (update != 0) {
+                    resultVo.setCode(0);
+                    resultVo.setMsg("已启用！");
+                }else {
+                    resultVo.setCode(2);
+                    resultVo.setMsg("启用失败！");
+                }
             }
+
         }catch (Exception e) {
             e.printStackTrace();
+            resultVo.setCode(2);
+            resultVo.setMsg("启用失败！");
         }
 
         return resultVo;
     }
 
+    /**
+     * 修改用户
+     * @param innerUser
+     * @return
+     */
     @Override
     public ResultVo updateInnerUserInfo(InnerUser innerUser) {
-
+        System.out.println(innerUser);
         // 创造条件构造器
         LambdaUpdateWrapper<InnerUser> lambdaUpdateWrapper = new LambdaUpdateWrapper<>();
         lambdaUpdateWrapper.eq(InnerUser::getInnerUserId, innerUser.getInnerUserId());
@@ -197,8 +228,14 @@ public class InnerUserServiceImpl implements InnerUserService {
         // 创建返回结果类
         ResultVo resultVo = new ResultVo();
         try {
-            // 如果前端传来的innerUser为null，那么就从数据库中将原来的密码查询出来
-            if (innerUser.getInnerUserPassword() == null) {
+            System.out.println(baseInnerUser.getInnerUserStatus().equals("禁用"));
+            if (baseInnerUser.getInnerUserStatus().equals("禁用")) {
+                resultVo.setCode(1);
+                resultVo.setMsg("该用户已经被禁用！无法修改！");
+                return resultVo;
+            }
+            // 如果前端传来的innerUser的密码为null，那么就从数据库中将原来的密码查询出来
+            if (innerUser.getInnerUserPassword().equals("")) {
 
                 String innerUserPassword = baseInnerUser.getInnerUserPassword();
                 innerUser.setInnerUserPassword(innerUserPassword);
@@ -208,11 +245,11 @@ public class InnerUserServiceImpl implements InnerUserService {
                 resultVo.setCode(0);
                 resultVo.setMsg("操作成功！");
             }else {
-                resultVo.setCode(-1);
+                resultVo.setCode(3);
                 resultVo.setMsg("操作失败！");
             }
         }catch (Exception e) {
-            resultVo.setCode(-1);
+            resultVo.setCode(3);
             resultVo.setMsg("操作失败！");
         }
 
@@ -248,5 +285,110 @@ public class InnerUserServiceImpl implements InnerUserService {
         }catch (Exception e) {
         }
         return resultVo;
+    }
+
+    /**
+     * 获取管理员的信息
+     * @return
+     */
+    @Override
+    public InnerUser getManagerInfo(HttpSession session) {
+        System.out.println(session.getAttribute("innerUserNo"));
+
+        //   创建条件构造器
+        LambdaQueryWrapper<InnerUser> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+
+        Object innerUserNo = session.getAttribute("innerUserNo");
+        lambdaQueryWrapper.eq(InnerUser::getInnerUserNo, innerUserNo);
+        InnerUser innerUser = null;
+        try {
+            innerUser = innerUserDao.selectOne(lambdaQueryWrapper);
+
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return innerUser;
+    }
+
+    /**
+     * 修改个人信息
+     * @param httpSession
+     * @return
+     */
+    @Override
+    public ResultVo updatePerson(InnerUser innerUser, HttpSession httpSession)  {
+        System.out.println(httpSession.getAttribute("innerUserNo"));
+
+        //   创建条件构造器
+        LambdaUpdateWrapper<InnerUser> lambdaUpdateWrapper = new LambdaUpdateWrapper<>();
+        Object innerUserNo = httpSession.getAttribute("innerUserNo");
+
+        lambdaUpdateWrapper.eq(InnerUser::getInnerUserNo, innerUserNo)
+                        .set(InnerUser::getInnerUserName, innerUser.getInnerUserName())
+                        .set(InnerUser::getInnerUserGender, innerUser.getInnerUserGender())
+                        .set(InnerUser::getInnerUserEmail, innerUser.getInnerUserEmail())
+                        .set(InnerUser::getInnerUserPhone, innerUser.getInnerUserPhone());
+        ResultVo resultVo = new ResultVo();
+        try {
+
+            int update = innerUserDao.update(innerUser, lambdaUpdateWrapper);
+            if (update > 0) {
+                resultVo.setCode(0);
+                resultVo.setMsg("操作成功！");
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+            resultVo.setCode(3);
+            resultVo.setMsg("操作失败！");
+        }
+        return resultVo;
+    }
+
+    // 修改密码
+    @Override
+    public ResultVo confirmPwd(String confirmPwd, HttpSession httpSession) {
+        // 创建查询条件构造器
+        LambdaQueryWrapper<InnerUser> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        // 查询出数据库对象的密码，与前端传来的数据进行比对
+
+        //   创建条件构造器
+        LambdaUpdateWrapper<InnerUser> lambdaUpdateWrapper = new LambdaUpdateWrapper<>();
+        Object innerUserNo = httpSession.getAttribute("innerUserNo");
+
+        lambdaQueryWrapper.eq(InnerUser::getInnerUserNo, innerUserNo);
+
+        lambdaUpdateWrapper.eq(InnerUser::getInnerUserNo, innerUserNo)
+                        .set(InnerUser::getInnerUserPassword, confirmPwd);
+        ResultVo resultVo = new ResultVo();
+        try {
+            // 根据innerUserNo查询出数据库对象
+            InnerUser innerUser = innerUserDao.selectOne(lambdaQueryWrapper);
+
+            if (innerUser.getInnerUserPassword().equals(confirmPwd)) {
+                int update = innerUserDao.update(null, lambdaUpdateWrapper);
+
+                resultVo.setCode(0);
+                resultVo.setMsg("操作成功！");
+
+            }else {
+                resultVo.setCode(2);
+                resultVo.setMsg("当前密码错误！");
+            }
+
+
+
+        }catch (Exception e) {
+            e.printStackTrace();
+            resultVo.setCode(3);
+            resultVo.setMsg("操作失败！");
+        }
+        return resultVo;
+    }
+
+    // 获取员工数目
+    @Override
+    public Integer getInnerUserCount() {
+        Integer innerUserCount = innerUserDao.selectCount(null);
+        return innerUserCount;
     }
 }

@@ -12,15 +12,19 @@
 <body>
 
 <table class="layui-hide" id="userInfo" lay-filter="test"></table>
-
 <!--搜索框-->
 <script type="text/html" id="toolbarDemo">
-  <div class="demoTable">
-    &nbsp;&nbsp;用户查询：
-    <div class="layui-inline">
-      <input class="layui-input" id="searchUserName" name="loginUsername" autocomplete="off" placeholder="请输入用户名查询">
+
+  <div class="demoTable layui-form-pane">
+    <div class="layui-form-item">
+      <label class="layui-form-label">用户查询</label>
+      <div class="layui-input-inline">
+        <input type="text" class="layui-input" id="searchUserName" name="loginUsername" autocomplete="off" placeholder="请输入用户名查询">
+      </div>
+      <button class="layui-btn layui-btn-primary" type="button" id="searchBtn" data-type="reload" lay-filter="data-search-btn">
+        <i class="layui-icon layui-icon-search">&nbsp;&nbsp;搜索</i>
+      </button>
     </div>
-    <button id="searchBtn" type="button" class="layui-btn layui-btn-normal" data-type="reload" lay-filter="data-search-btn">搜索</button>
   </div>
 </script>
 <!--操作栏-->
@@ -102,7 +106,7 @@
   </div>
 </script>
 
-<script th:src="@{/layui/layui.js}" charset="utf-8"></script>
+<script th:src="@{/layui/layui.js}" ></script>
 
 <!-- 注意：如果你直接复制所有代码到本地，上述 JS 路径需要改成你本地的 -->
 
@@ -131,10 +135,10 @@
           // ,{field:'loginGender', title:'性别',width: 50}
           // ,{field:'loginIdentity', title:'身份号码', width:120}
           // ,{field:'loginAge', title:'年龄', width:50}
-          ,{field:'loginCreateTime', title:'用户创建时间', width:120}
-          ,{field:'loginCreateTime', title:'近期修改时间', width:120}
+          ,{field:'loginCreateTime', title:'用户创建时间', width:150}
+          ,{field:'loginCreateTime', title:'近期修改时间', width:150}
           ,{field:'loginStatus', title:'状态', width:80}
-          ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:200}
+          ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:170}
         ]
       ]
       ,page: true
@@ -174,7 +178,7 @@
 
           title: "用户基本信息",
           type: 1,
-          area: ['660px', '550px'],
+          area: ['550px', '440px'],
           content: $('#show-info').html(),
           success: function(layero, index) {
             form.val('showInfoForm', {
@@ -199,13 +203,32 @@
               loginId: obj.data.loginId,
             },
             success: function(resultVo) {
-              layer.msg(resultVo.msg,{
-                icon: 1,
-                time: 1000,
-              },function (){
-
-                location.reload()
-              });
+              if (resultVo.code === 0) {
+                layer.msg(resultVo.msg,{
+                  icon: 1,
+                  time: 1000  // 1秒关闭
+                }, function (){
+                  // 一秒以后进行页面重新刷新
+                  location.reload();
+                });
+              }else if (resultVo.code === 1) {
+                layer.msg(resultVo.msg,{
+                  icon: 0,
+                  time: 1000  // 1秒关闭
+                }, function (){
+                  // 一秒以后进行页面重新刷新
+                  location.reload();
+                });
+              }else if (resultVo.code === 3) {
+                layer.msg(resultVo.msg,{
+                  icon: 2,
+                  time: 1000  // 1秒关闭
+                }, function (){
+                  // 一秒以后进行页面重新刷新
+                  location.reload();
+                });
+              }
+              close(index);
               layer.close(index);
             },
             error: function (resultVo) {
@@ -229,14 +252,31 @@
               loginId: obj.data.loginId,
             },
             success: function(resultVo) {
-              console.log(obj.data.userId);
-              console.log(resultVo);
-              layer.msg(resultVo.msg,{
-                icon: 1,
-                time: 1000,
-              },function (){
-                location.reload();
-              });
+              if (resultVo.code === 0) {
+                layer.msg(resultVo.msg,{
+                  icon: 1,
+                  time: 1000  // 1秒关闭
+                }, function (){
+                  // 一秒以后进行页面重新刷新
+                  location.reload();
+                });
+              }else if (resultVo.code === 1) {
+                layer.msg(resultVo.msg,{
+                  icon: 0,
+                  time: 1000  // 1秒关闭
+                }, function (){
+                  // 一秒以后进行页面重新刷新
+                  location.reload();
+                });
+              }else if (resultVo.code === 3) {
+                layer.msg(resultVo.msg,{
+                  icon: 2,
+                  time: 1000  // 1秒关闭
+                }, function (){
+                  // 一秒以后进行页面重新刷新
+                  location.reload();
+                });
+              }
               close(index);
             },
             error: function (resultVo) {

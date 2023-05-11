@@ -18,8 +18,6 @@ public interface OrdinaryUserService {
     // 更新用户状态(此处启用用户状态)
     public ResultVo activeNormalUser(String userId);
 
-
-
-    // 测试事务是否成功
-    public void test();
+    // 获取数目
+    public Integer getNormalUserCounts();
 }

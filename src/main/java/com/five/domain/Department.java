@@ -9,13 +9,14 @@ import lombok.Data;
  */
 @Data
 public class Department {
+    private String departmentNo;
     private String departmentId;
     private String departmentName;
     private String departmentEmail;
     private String departmentPhone;
     private String departmentHead;
     private String departmentDescription;
-    private String departmentCreatTime;
+    private String departmentCreateTime;
     private String departmentUpdateTime;
     private String departmentStatus;
 

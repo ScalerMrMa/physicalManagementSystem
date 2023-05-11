@@ -1,0 +1,16 @@
+
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.layui-bg-gray {
+    height: 100%;
+}
+
+.layui-nav-img {
+    height: 80px;
+    width: 80px;
+}

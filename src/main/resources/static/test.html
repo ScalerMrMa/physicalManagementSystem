@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>后台管理系统</title>
+  <link rel="stylesheet" href="https://cdn.staticfile.org/layui/2.6.8/css/layui.css">
+  <style>
+    body {
+      padding: 20px;
+    }
+    .layui-container {
+      max-width: 980px;
+    }
+    .layui-card {
+      margin-bottom: 20px;
+    }
+    .chart-container {
+      height: 400px;
+    }
+  </style>
+</head>
+<body>
+<div class="layui-container">
+  <div class="layui-card">
+    <div class="layui-card-header">总览信息</div>
+    <div class="layui-card-body">
+      <div class="layui-row layui-col-space10">
+        <div class="layui-col-md3">
+          <div class="layui-card">
+            <div class="layui-card-body">
+              <h3>注册用户数</h3>
+              <p class="number">1000</p>
+            </div>
+          </div>
+        </div>
+        <div class="layui-col-md3">
+          <div class="layui-card">
+            <div class="layui-card-body">
+              <h3>订单数量</h3>
+              <p class="number">500</p>
+            </div>
+          </div>
+        </div>
+        <div class="layui-col-md3">
+          <div class="layui-card">
+            <div class="layui-card-body">
+              <h3>销售额</h3>
+              <p class="number">100,000</p>
+            </div>
+          </div>
+        </div>
+        <div class="layui-col-md3">
+          <div class="layui-card">
+            <div class="layui-card-body">
+              <h3>访问量</h3>
+              <p class="number">10,000</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="layui-card">
+    <div class="layui-card-header">数据统计图表</div>
+    <div class="layui-card-body">
+      <div class="chart-container" id="chartContainer"></div>
+    </div>
+  </div>
+
+  <div class="layui-card">
+    <div class="layui-card-header">最新动态</div>
+    <div class="layui-card-body">
+      <table class="layui-table" lay-data="{url: 'api/news', page: true, limit: 5, cols: [[
+                    {field: 'title', title: '标题', width: '60%'},
+                    {field: 'date', title: '日期', width: '40%'}
+                ]]}" lay-filter="newsTable"></table>
+    </div>
+  </div>
+
+  <div class="layui-card">
+    <div class="layui-card-header">日历和提醒事项</div>
+    <div class="layui-card-body">
+      <div id="calendar"></div>
+    </div>
+  </div>
+
+  <div class="layui-card">
+    <div class="layui-card-header">数据列表</div>
+    <div class="layui-card-body">
+      <table class="layui-table" lay-data="{url: 'api/data', page: true, limit: 10, cols: [[
+                    {field: 'id
+                        {field: 'id', title: 'ID', width: '10%'},
+                        {field: 'name', title: '名称', width: '30%'},
+                        {field: 'category', title: '类别', width: '20%'},
+                        {field: 'count', title: '数量', width: '20%'},
+                        {field: 'location', title: '位置', width: '20%'}
+                    ]]}" lay-filter="dataTable"></table>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.staticfile.org/layui/2.6.8/layui.js"></script>
+<script src="https://cdn.staticfile.org/echarts/5.2.2/echarts.min.js"></script>
+<script>
+  layui.use(['element', 'table', 'laydate'], function () {
+    var element = layui.element;
+    var table = layui.table;
+    var laydate = layui.laydate;
+
+    // 初始化echarts图表
+    var chart = echarts.init(document.getElementById('chartContainer'));
+
+    // 设置图表配置项和数据
+    var option = {
+      title: {
+        text: '数据统计图表',
+        x: 'center'
+      },
+      // ... （根据实际需求设置图表的配置项和数据）
+    };
+
+    // 使用配置项显示图表
+    chart.setOption(option);
+
+    // 初始化日历
+    laydate.render({
+      elem: '#calendar'
+      // ... （根据实际需求设置日历的配置项）
+    });
+
+    // 渲染数据表格
+    table.render({
+      elem: '#dataTable',
+      // ... （根据实际需求设置数据表格的配置项）
+    });
+
+    // 监听表格事件、日期选择器事件等
+
+    // ...
+
+  });
+</script>
+</body>
+</html>

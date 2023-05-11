@@ -16,15 +16,21 @@
 <!--搜索框-->
 <script type="text/html" id="toolbarDemo">
     <div class="layui-btn-container" style="float: left">
-        <button id="addBtn" type="button" class="layui-btn layui-btn-primary" lay-event="addInnerUser">新增</button>
-        <button id="del" type="button" class="layui-btn layui-btn-danger delAll_btn" lay-event="forbidInnerUsers">批量禁用</button>
+        <button id="addBtn" type="button" class="layui-btn layui-btn-primary" lay-event="addInnerUser">
+            <i class="layui-icon layui-icon-add-circle-fine">&nbsp;&nbsp;新增</i>
+        </button>
+        <button id="del" type="button" class="layui-btn layui-btn-danger delAll_btn" lay-event="forbidInnerUsers">
+            <i class="layui-icon layui-icon-close">&nbsp;&nbsp;批量禁用</i>
+        </button>
     </div>
     <div class="demoTable">
-        &nbsp;&nbsp;用户查询：
+        &nbsp;&nbsp;用户查询
         <div class="layui-inline">
             <input class="layui-input" id="searchUserName" name="innerUserName" autocomplete="off" placeholder="请输入用户名查询">
         </div>
-        <button id="searchBtn" type="button" class="layui-btn layui-btn-normal" data-type="reload" lay-filter="data-search-btn">搜索</button>
+        <button id="searchBtn" type="button" class="layui-btn layui-btn-primary" data-type="reload" lay-filter="data-search-btn">
+            <i class="layui-icon layui-icon-search">&nbsp;&nbsp;搜索</i>
+        </button>
     </div>
 </script>
 <!--行操作-->
@@ -79,17 +85,6 @@
             </div>
 
 <!--            <div class="layui-form-item">-->
-<!--                <label class="layui-form-label">工作状态</label>-->
-<!--                <div class="layui-input-inline">-->
-<!--                    <select name="innerUserWorkStatus" lay-verify="required" lay-search>-->
-<!--                        <option value=""></option>-->
-<!--                        <option value="在职">在职</option>-->
-<!--                        <option value="休假">休假</option>-->
-<!--                        <option value="离职">离职</option>-->
-<!--                    </select>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="layui-form-item">-->
 <!--                <label class="layui-form-label">账户状态</label>-->
 <!--                <div class="layui-input-inline">-->
 <!--                    <select name="innerUserAccountStatus" lay-verify="required" lay-search>-->
@@ -118,13 +113,22 @@
                 </div>
             </div>
             <div class="layui-form-item">
-                <label class="layui-form-label">状态</label>
+                <label class="layui-form-label">工作状态</label>
+                <div class="layui-input-inline">
+                    <select name="innerUserWorkStatus" lay-verify="required" lay-search>
+                        <option value=""></option>
+                        <option value="上班">上班</option>
+                        <option value="休假">休假</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">账户状态</label>
                 <div class="layui-input-inline">
                     <select name="innerUserStatus" lay-verify="required" lay-search>
                         <option value=""></option>
-                        <option value="在职">在职</option>
-                        <option value="休假">休假</option>
-                        <option value="离职">离职</option>
+                        <option value="启用">启用</option>
+                        <option value="禁用">禁用</option>
                     </select>
                 </div>
             </div>
@@ -238,32 +242,26 @@
                 </div>
             </div>
             <div class="layui-form-item">
-                <label class="layui-form-label">状态</label>
+                <label class="layui-form-label">工作状态</label>
                 <div class="layui-input-inline">
-                    <select name="innerUserStatus" lay-verify="required" lay-search>
+                    <select name="innerUserWorkStatus" lay-verify="required" lay-search>
                         <option value=""></option>
-                        <option value="在职">在职</option>
+                        <option value="上班">上班</option>
                         <option value="休假">休假</option>
-                        <option value="离职">离职</option>
                     </select>
                 </div>
             </div>
 <!--            <div class="layui-form-item">-->
-<!--                <label class="layui-form-label">账户状态</label>-->
+<!--                <label class="layui-form-label">状态</label>-->
 <!--                <div class="layui-input-inline">-->
-<!--                    <select name="innerUserAccountStatus" lay-verify="required" lay-search>-->
+<!--                    <select name="innerUserStatus" lay-verify="required" lay-search>-->
 <!--                        <option value=""></option>-->
 <!--                        <option value="启用">启用</option>-->
 <!--                        <option value="禁用">禁用</option>-->
 <!--                    </select>-->
 <!--                </div>-->
 <!--            </div>-->
-            <!--            <div class="layui-form-item">-->
-            <!--                <label class="layui-form-label">账户状态</label>-->
-            <!--                <div class="layui-input-block">-->
-            <!--                    <input type="checkbox" name="open" lay-skin="switch" lay-filter="switchTest" title="启用|禁用">-->
-            <!--                </div>-->
-            <!--            </div>-->
+
             <div class="layui-form-item">
                 <label class="layui-form-label">入职时间</label>
                 <div class="layui-input-block">
@@ -317,10 +315,10 @@
                     ,{field:'innerUserEmail', title:'电子邮箱', width:150}
                     ,{field:'innerUserPhone', title:'联系电话', width: 150}
                     ,{field:'innerUserCreateTime', title:'入职时间', width:150}
-                    // ,{field:'innerUserWorkStatus', title:'工作状态', width:120}
+                    ,{field:'innerUserWorkStatus', title:'工作状态', width:120}
                     // ,{field:'innerUserAccountStatus', title:'工作状态', width:120}
-                    ,{field:'innerUserStatus', title:'状态', width:120}
-                    ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:260}
+                    ,{field:'innerUserStatus', title:'账户状态', width:120}
+                    ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:170}
                 ]
             ]
             ,page: true
@@ -375,15 +373,31 @@
                                         innerUserId: innerUserIds
                                     },
                                     success: function(resultVo) {
-                                        console.log(data)
-                                        layer.msg(resultVo.msg,{
-                                            icon: 1,
-                                            time: 1000,
-
-                                        },function (){
-                                            location.reload();
-                                        });
-                                        // tableIns.reload();
+                                        if (resultVo.code === 0) {
+                                            layer.msg(resultVo.msg,{
+                                                icon: 1,
+                                                time: 1000  // 1秒关闭
+                                            }, function (){
+                                                // 一秒以后进行页面重新刷新
+                                                location.reload();
+                                            });
+                                        }else if (resultVo.code === 1) {
+                                            layer.msg(resultVo.msg,{
+                                                icon: 0,
+                                                time: 1000  // 1秒关闭
+                                            }, function (){
+                                                // 一秒以后进行页面重新刷新
+                                                location.reload();
+                                            });
+                                        }else if (resultVo.code === 3) {
+                                            layer.msg(resultVo.msg,{
+                                                icon: 2,
+                                                time: 1000  // 1秒关闭
+                                            }, function (){
+                                                // 一秒以后进行页面重新刷新
+                                                location.reload();
+                                            });
+                                        }
                                         layer.close(index);
                                     },
                                     error: function (resultVo) {
@@ -439,22 +453,18 @@
                             "innerUserName": obj.data.innerUserName,
                             "innerUserGender": obj.data.innerUserGender,
                             "innerUserRole": obj.data.innerUserRole,
+                            "innerUserPassword": obj.data.innerUserPassword,
                             "innerUserDepartment": obj.data.innerUserDepartment,
                             "innerUserEmail": obj.data.innerUserEmail,
                             "innerUserPhone": obj.data.innerUserPhone,
                             "innerUserCreateTime": obj.data.innerUserCreateTime,
                             "innerUserStopTime": obj.data.innerUserStopTime,
+                            "innerUserWorkStatus": obj.data.innerUserWorkStatus,
                             "innerUserStatus": obj.data.innerUserStatus,
                         });
                     },
                     error: function (resultVo) {
-                        layer.msg(resultVo.msg,{
-                            icon: 2,
-                            time: 1000,
-                        },function (){
-                            location.reload();
-                        });
-                        layer.close(index);
+                        layer.alert('添加失败!', {icon: 2});
                     }
                 });
             }else if (obj.event === 'forbid') {
@@ -466,13 +476,31 @@
                             innerUserId: obj.data.innerUserId
                         },
                         success: function(resultVo) {
-                            console.log(resultVo)
-                            layer.msg(resultVo.msg,{
-                                icon: 1,
-                                time: 1000,
-                            },function (){
-                                location.reload();
-                            });
+                            if (resultVo.code === 0) {
+                                layer.msg(resultVo.msg,{
+                                    icon: 1,
+                                    time: 1000  // 1秒关闭
+                                }, function (){
+                                    // 一秒以后进行页面重新刷新
+                                    location.reload();
+                                });
+                            }else if (resultVo.code === 1) {
+                                layer.msg(resultVo.msg,{
+                                    icon: 0,
+                                    time: 1000  // 1秒关闭
+                                }, function (){
+                                    // 一秒以后进行页面重新刷新
+                                    location.reload();
+                                });
+                            }else if (resultVo.code === 3) {
+                                layer.msg(resultVo.msg,{
+                                    icon: 2,
+                                    time: 1000  // 1秒关闭
+                                }, function (){
+                                    // 一秒以后进行页面重新刷新
+                                    location.reload();
+                                });
+                            }
                             layer.close(index);
                         },
                         error: function (resultVo) {
@@ -496,13 +524,31 @@
                             innerUserId: obj.data.innerUserId
                         },
                         success: function(resultVo) {
-                            console.log(resultVo)
-                            layer.msg(resultVo.msg,{
-                                icon: 1,
-                                time: 1000,
-                            },function (){
-                                location.reload();
-                            });
+                            if (resultVo.code === 0) {
+                                layer.msg(resultVo.msg,{
+                                    icon: 1,
+                                    time: 1000  // 1秒关闭
+                                }, function (){
+                                    // 一秒以后进行页面重新刷新
+                                    location.reload();
+                                });
+                            }else if (resultVo.code === 1) {
+                                layer.msg(resultVo.msg,{
+                                    icon: 0,
+                                    time: 1000  // 1秒关闭
+                                }, function (){
+                                    // 一秒以后进行页面重新刷新
+                                    location.reload();
+                                });
+                            }else if (resultVo.code === 3) {
+                                layer.msg(resultVo.msg,{
+                                    icon: 2,
+                                    time: 1000  // 1秒关闭
+                                }, function (){
+                                    // 一秒以后进行页面重新刷新
+                                    location.reload();
+                                });
+                            }
                             layer.close(index);
                         },
                         error: function (resultVo) {
@@ -554,13 +600,32 @@
         // 监听提交事件
         form.on('submit(addForm)', function (data) {
             $.post("manage/addInnerUserInfo", data.field, function (resultVo) {
-                layer.msg(resultVo.msg,{
-                    icon: 1,
-                    time: 1000  // 1秒关闭
-                }, function (){
-                    // 一秒以后进行页面重新刷新
-                    location.reload();
-                });
+                if (resultVo.code === 0) {
+                    layer.msg(resultVo.msg,{
+                        icon: 1,
+                        time: 1000  // 1秒关闭
+                    }, function (){
+                        // 一秒以后进行页面重新刷新
+                        location.reload();
+                    });
+                }else if (resultVo.code === 1) {
+                    layer.msg(resultVo.msg,{
+                        icon: 0,
+                        time: 1000  // 1秒关闭
+                    }, function (){
+                        // 一秒以后进行页面重新刷新
+                        location.reload();
+                    });
+                }else if (resultVo.code === 3) {
+                    layer.msg(resultVo.msg,{
+                        icon: 2,
+                        time: 1000  // 1秒关闭
+                    }, function (){
+                        // 一秒以后进行页面重新刷新
+                        location.reload();
+                    });
+                }
+
             }).fail(function() {
                 layer.alert('添加失败!', {icon: 2});
             });
@@ -570,13 +635,34 @@
         // 修改数据
         form.on('submit(edit-btn-form)', function (data) {
             $.post("manage/updateInnerUserInfo", data.field, function (resultVo) {
-                layer.msg(resultVo.msg,{
-                    icon: 1,
-                    time: 1000  // 1秒关闭
-                }, function (){
-                    // 一秒以后进行页面重新刷新
-                    location.reload();
-                });
+                if (resultVo.code === 0) {
+                    layer.msg(resultVo.msg,{
+                        icon: 1,
+                        time: 1000  // 1秒关闭
+                    }, function (){
+                        // 一秒以后进行页面重新刷新
+                        location.reload();
+                    });
+                }else if (resultVo.code === 1) {
+                    layer.msg(resultVo.msg,{
+                        icon: 0,
+                        time: 1000  // 1秒关闭
+                    }, function (){
+                        // 一秒以后进行页面重新刷新
+                        location.reload();
+                    });
+                }else if (resultVo.code === 3) {
+                    layer.msg(resultVo.msg,{
+                        icon: 2,
+                        time: 1000  // 1秒关闭
+                    }, function (){
+                        // 一秒以后进行页面重新刷新
+                        location.reload();
+                    });
+                }
+
+                layer.close(index);
+
             }).fail(function() {
                 layer.alert('添加失败!', {icon: 2});
             });

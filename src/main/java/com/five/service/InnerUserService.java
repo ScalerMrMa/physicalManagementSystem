@@ -4,6 +4,7 @@ import com.five.domain.InnerUser;
 import com.five.vo.DataVo;
 import com.five.vo.ResultVo;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -27,4 +28,16 @@ public interface InnerUserService {
     public ResultVo updateInnerUserInfo(InnerUser innerUser);
     // 修改用户密码
     public ResultVo updateInnerUserSecret(InnerUser innerUser);
+
+    // 获取管理员的信息
+    public InnerUser getManagerInfo(HttpSession httpSession);
+
+    // 修改个人信息
+    public ResultVo updatePerson(InnerUser innerUser, HttpSession httpSession);
+
+    // 修改密码
+    public ResultVo confirmPwd(String confirmPwd, HttpSession httpSession);
+
+    // 获取数目
+    public Integer getInnerUserCount();
 }

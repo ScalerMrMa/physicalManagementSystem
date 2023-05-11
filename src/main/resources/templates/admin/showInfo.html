@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<!--模板渲染声明-->
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+</head>
+<body>
+<form class="layui-form" action="" style="margin-left: 100px;">
+    <div class="layui-form-item">
+        <label class="layui-form-label" style="vertical-align: middle;">账号</label>
+        <label class="layui-form-label" th:text="${innerUserNo}" style="text-align: left; vertical-align: middle;"></label>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label" style="vertical-align: middle;">用户名</label>
+        <label class="layui-form-label" th:text="${innerUserName}" style="text-align: left; vertical-align: middle;"></label>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label" style="vertical-align: middle;">性别</label>
+        <label class="layui-form-label" th:text="${innerUserGender}" style="text-align: left; vertical-align: middle;"></label>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label" style="vertical-align: middle;">电子邮箱</label>
+        <label class="layui-form-label" th:text="${innerUserEmail}" style="text-align: left; vertical-align: middle;"></label>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label" style="vertical-align: middle;">电话</label>
+        <label class="layui-form-label" th:text="${innerUserPhone}" style="text-align: left; vertical-align: middle;"></label>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label" style="vertical-align: middle;">科室</label>
+        <label class="layui-form-label" th:text="${innerUserDepartment}" style="text-align: left; vertical-align: middle;"></label>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label" style="vertical-align: middle;">职位</label>
+        <label class="layui-form-label" th:text="${innerUserRole}" style="text-align: left; vertical-align: middle;"></label>
+    </div>
+</form>
+
+
+</body>
+</html>

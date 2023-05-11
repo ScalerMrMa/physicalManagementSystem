@@ -11,12 +11,15 @@ import java.util.Date;
  */
 @Data
 public class Reserve {
-    private String reserveId;
+    private Integer reserveId;
+    private String loginUserName;
     private String reserveRealName;
-    private String reserveDepartmentName;
+    private String reservePhone;
+    private String reserveEmail;
+    private String reserveContent;
     private Date reserveTime;
     private Date reserveCreateTime;
-    private String reserveContent;
     private Double reservePrice;
     private String reserveStatus;
+    private Date reserveUpdateTime;
 }

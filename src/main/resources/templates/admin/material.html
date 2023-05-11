@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Layui</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+  <script th:src="@{/layui/layui.js}" charset="utf-8"></script>
+  <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+</head>
+<body>
+<!--表格-->
+<table class="layui-hide" id="innerUserInfo" lay-filter="test"></table>
+<!--搜索框-->
+<script type="text/html" id="toolbarDemo">
+  <div class="layui-btn-container" style="float: left">
+    <button id="addBtn" type="button" class="layui-btn layui-btn-primary" lay-event="addMaterial">
+      <i class="layui-icon layui-icon-add-circle-fine">&nbsp;&nbsp;新增</i>
+    </button>
+  </div>
+  <div class="demoTable">
+    &nbsp;&nbsp;物资查询
+    <div class="layui-inline">
+      <input class="layui-input" id="searchMaterialName" name="materialName" autocomplete="off" placeholder="请输入物资名称查询">
+    </div>
+    <button id="searchBtn" type="button" class="layui-btn layui-btn-primary" data-type="reload" lay-filter="data-search-btn">
+      <i class="layui-icon layui-icon-search">&nbsp;&nbsp;搜索</i>
+    </button>
+  </div>
+</script>
+<!--行操作-->
+<script type="text/html" id="barDemo">
+  <span>
+    <a id="editBtn" class="layui-btn layui-btn-primary layui-btn-xs" lay-event="shop">
+    <i class="layui-icon">购入</i>
+  </a>
+  </span>
+  <span>
+    <a id="activeBtn" class="layui-btn layui-btn-warm layui-btn-xs" lay-event="active">
+    <i class="layui-icon">启用</i>
+  </a>
+  </span>
+  <span>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="forbid">
+    <i class="layui-icon">禁用</i>
+  </a>
+  </span>
+</script>
+<!--添加表单-->
+<script type="text/html" id="add-innerInfo">
+  <div class="layui-col-md10" style="margin-left: 35px; margin-top: 20px">
+    <form class="layui-form" action="">
+      <div class="layui-form-item">
+        <label class="layui-form-label">材料名称</label>
+        <div class="layui-input-block">
+          <input type="text" name="materialName" required lay-verify="required" placeholder="请输入材料名称" autoComplete="off"
+                 class="layui-input">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">类别</label>
+        <div class="layui-input-block">
+          <input type="text" name="materialCategory" required lay-verify="required" placeholder="请输入材料类别" autoComplete="off"
+                 class="layui-input">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">型号</label>
+        <div class="layui-input-block">
+          <input type="text" name="materialModel" required lay-verify="required" placeholder="请输入材料型号" autoComplete="off"
+                 class="layui-input">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">存放位置</label>
+        <div class="layui-input-block">
+          <input type="text" name="materialLocation" required lay-verify="required" placeholder="请输入存放位置" autoComplete="off"
+                 class="layui-input">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">数量</label>
+        <div class="layui-input-block">
+          <input type="number" name="materialCounts"  placeholder="请输入采购数量" autoComplete="on" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">价格</label>
+        <div class="layui-input-block">
+          <input type="text" name="materialPrice" placeholder="请输入价格" autoComplete="on" class="layui-input">
+        </div>
+      </div>
+
+      <div class="layui-form-item">
+        <label class="layui-form-label">入库时间</label>
+        <div class="layui-input-block">
+          <input type="date" name="materialRecentInroomTime" placeholder="请输入入库时间" autoComplete="off"
+                 class="layui-input">
+          </div>r
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">失效时间</label>
+        <div class="layui-input-block">
+          <input type="date" name="materialExpirationTime" lay-verify="required"  placeholder="请输入失效时间" autoComplete="on" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">生产商</label>
+        <div class="layui-input-block">
+          <input type="text" name="materialManufacturer" lay-verify="required"  placeholder="请输入生产商" autoComplete="on" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">供应商</label>
+        <div class="layui-input-block">
+          <input type="text" name="materialProvider" lay-verify="required"  placeholder="请输入供应商" autoComplete="on" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">简介</label>
+        <div class="layui-input-block">
+          <input type="text" name="materialRemark" lay-verify="required"  placeholder="请输入简介" autoComplete="on" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <div class="layui-input-block" style="text-align: center">
+          <button class="layui-btn" lay-submit lay-filter="addForm">提交</button>
+          <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</script>
+
+
+<!--编辑表单-->
+<script type="text/html" id="shop-material">
+  <div class="layui-col-md10" style="margin-left: 35px; margin-top: 20px">
+    <form class="layui-form" action="" lay-filter="editForm">
+      <div class="layui-form-item">
+        <label class="layui-form-label">ID</label>
+        <div class="layui-input-block">
+          <input type="text" name="materialId" required lay-verify="required" autoComplete="off"
+                 disabled
+                 class="layui-input">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">数量</label>
+        <div class="layui-input-block">
+          <input type="number" name="materialCounts" required lay-verify="required" placeholder="请输入购入数量" autoComplete="off"
+                 class="layui-input">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">价格</label>
+        <div class="layui-input-block">
+          <input type="text" name="materialPrice" required lay-verify="required" placeholder="请输入材料名称" autoComplete="off"
+                 class="layui-input">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <div class="layui-input-block" style="text-align: center">
+          <button class="layui-btn" lay-submit lay-filter="edit-btn-form">购入</button>
+          <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</script>
+<!-- 注意：如果你直接复制所有代码到本地，上述 JS 路径需要改成你本地的 -->
+<script>
+  layui.use(['table','form','jquery','layer'], function(){
+    var layer = layui.layer
+            ,$ = layui.jquery,table = layui.table;
+    var form = layui.form;
+
+    table.render({
+      elem: '#innerUserInfo'
+      ,url: '/manage/getMaterial'
+      ,toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
+      ,defaultToolbar: ['filter', 'exports', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
+        title: '提示'
+        ,layEvent: 'LAYTABLE_TIPS'
+        ,icon: 'layui-icon-tips'
+      }]
+      ,title: '工作人员信息表'
+      ,cols: [
+        [
+          {type: 'checkbox', fixed: 'left'}
+          ,{field:'materialId', title:'ID', width:120,}
+          ,{field:'materialName', title:'材料名称', width:120,}
+          ,{field:'materialCategory', title:'类别', width:120,}
+          ,{field:'materialModel', title:'型号', width:120 }
+          ,{field:'materialLocation', title:'位置', width:100}
+          ,{field:'materialCounts', title:'数量', width:100}
+          ,{field:'materialPrice', title:'价格', width:120}
+          ,{field:'materialRecentInroomTime', title:'入库时间', width:100}
+          ,{field:'materialExpirationTime', title:'失效时间', width:150}
+          ,{field:'materialManufacturer', title:'生产商', width: 150}
+          ,{field:'materialProvider', title:'供应商', width:150}
+          ,{field:'materialRemark', title:'简介', width:120}
+          ,{field:'materialStatus',title:'状态',width: 120}
+          // ,{field:'innerUserAccountStatus', title:'工作状态', width:120}
+          ,{fixed: 'right', title:'操作', toolbar: '#barDemo',width: 170}
+        ]
+      ]
+      ,page: true
+      ,limit:10
+      ,parseData: function (res) {
+        var result;
+        console.log(this);
+        if (this.page.curr) {
+          result = res.data.slice(this.limit * (this.page.curr - 1), this.limit * this.page.curr);
+        } else {
+          result = res.data.slice(0, this.limit);
+        }
+        return {"code": res.code, "msg": res.msg, "count": res.count, "data": result};
+      }
+    });
+    //头工具栏事件
+    table.on('toolbar(test)', function(obj){
+      var checkStatus = table.checkStatus(obj.config.id);
+      switch(obj.event){
+        case 'addMaterial':
+          var data = checkStatus.data;
+          layer.open({
+            title: "添加员工信息",
+            type: 1,
+            area: ['660px', '600px'],
+            content: $('#add-innerInfo').html(),
+            // 添加了这段后，单选框和下拉框才能正常显示
+            success: function(layero, index) {
+              // 在打开弹窗之后，手动渲染表单
+              layui.use(['form'], function() {
+                var form = layui.form;
+                form.render();
+              });
+            }
+          });
+          break;
+              //自定义头工具栏右侧图标 - 提示
+        case 'LAYTABLE_TIPS':
+          layer.alert('我还没有想好说什么咯！');
+          break;
+      };
+    });
+    // 监听行工具事件
+    table.on('tool(test)', function(obj){
+      var data = obj.data;
+      //console.log(obj)
+      if (obj.event === 'shop') {
+        // 弹出表单进行修改
+        layer.open({
+          elem: "#shop-material",
+          title: "购入物资",
+          type: 1,
+          area: ['440px', '330px'],
+          content: $('#shop-material').html(),
+
+          success: function(layero, index) {
+            // 在打开弹窗之后，手动渲染表单
+            layui.use(['form'], function() {
+              var form = layui.form;
+              form.render();
+            });
+
+            form.val('editForm', {
+              // 赋值
+              "materialId": obj.data.materialId,
+              "materialPrice": obj.data.materialPrice
+            });
+          },
+          error: function (resultVo) {
+            layer.alert('添加失败!', {icon: 2});
+          }
+        });
+      }else if (obj.event === 'forbid') {
+        layer.confirm('确定禁用该物资？一旦禁用将无法使用！', {icon: 3, title: '提示信息'}, function(index) {
+          $.ajax({
+            url: 'manage/forbidMaterial',
+            type: 'PUT',
+            data: {
+              materialId: obj.data.materialId
+            },
+            success: function(resultVo) {
+              if (resultVo.code === 0) {
+                layer.msg(resultVo.msg,{
+                  icon: 1,
+                  time: 1000  // 1秒关闭
+                }, function (){
+                  // 一秒以后进行页面重新刷新
+                  location.reload();
+                });
+              }else if (resultVo.code === 1) {
+                layer.msg(resultVo.msg,{
+                  icon: 0,
+                  time: 1000  // 1秒关闭
+                }, function (){
+                  // 一秒以后进行页面重新刷新
+                  location.reload();
+                });
+              }else if (resultVo.code === 3) {
+                layer.msg(resultVo.msg,{
+                  icon: 2,
+                  time: 1000  // 1秒关闭
+                }, function (){
+                  // 一秒以后进行页面重新刷新
+                  location.reload();
+                });
+              }
+              layer.close(index);
+            },
+            error: function (resultVo) {
+              layer.msg(resultVo.msg,{
+                icon: 2,
+                time: 1000,
+              },function (){
+                location.reload();
+              });
+              layer.close(index);
+            }
+
+          });
+        });
+      } else if (obj.event === 'active') {
+        layer.confirm('确定启用该物资？请遵循相关的使用条例！', {icon: 3, title: '提示信息'}, function(index) {
+          $.ajax({
+            url: 'manage/activeMaterial',
+            type: 'PUT',
+            data: {
+              materialId: obj.data.materialId
+            },
+            success: function(resultVo) {
+              if (resultVo.code === 0) {
+                layer.msg(resultVo.msg,{
+                  icon: 1,
+                  time: 1000  // 1秒关闭
+                }, function (){
+                  // 一秒以后进行页面重新刷新
+                  location.reload();
+                });
+              }else if (resultVo.code === 1) {
+                layer.msg(resultVo.msg,{
+                  icon: 0,
+                  time: 1000  // 1秒关闭
+                }, function (){
+                  // 一秒以后进行页面重新刷新
+                  location.reload();
+                });
+              }else if (resultVo.code === 3) {
+                layer.msg(resultVo.msg,{
+                  icon: 2,
+                  time: 1000  // 1秒关闭
+                }, function (){
+                  // 一秒以后进行页面重新刷新
+                  location.reload();
+                });
+              }
+              layer.close(index);
+            },
+            error: function (resultVo) {
+              layer.msg(resultVo.msg,{
+                icon: 2,
+                time: 1000,
+              },function (){
+                location.reload();
+              });
+              layer.close(index);
+            }
+          });
+        });
+      }else if (obj.event === 'updateSecret') {
+        layer.confirm('确定修改密码此操作不可逆？', {icon: 3, title: '提示信息'}, function(index) {
+                  layer.open({
+                    elem: "#update-secret-form",
+                    title: "修改密码",
+                    type: 1,
+                    area: ['330px', '220px'],
+                    content: $('#update-secret-form').html(),
+                    success: function(layero, index) {
+                      // 在打开弹窗之后，手动渲染表单
+                      layui.use(['form'], function() {
+                        var form = layui.form;
+                        form.render();
+                      });
+
+                      form.val('editPassword', {
+                        // 赋值
+                        "innerUserId": obj.data.innerUserId
+                      });
+
+                    },
+                    error: function (resultVo) {
+                      layer.msg(resultVo.msg,{
+                        icon: 2,
+                        time: 1000,
+                      },function (){
+                        location.reload();
+                      });
+                      layer.close(index);
+                    }
+                  });
+        });
+      }
+    });
+    // 监听提交事件
+    form.on('submit(addForm)', function (data) {
+      $.post("manage/addMaterial", data.field, function (resultVo) {
+        if (resultVo.code === 0) {
+          layer.msg(resultVo.msg,{
+            icon: 1,
+            time: 1000  // 1秒关闭
+          }, function (){
+            // 一秒以后进行页面重新刷新
+            location.reload();
+          });
+        }else if (resultVo.code === 1) {
+          layer.msg(resultVo.msg,{
+            icon: 0,
+            time: 1000  // 1秒关闭
+          }, function (){
+            // 一秒以后进行页面重新刷新
+            location.reload();
+          });
+        }else if (resultVo.code === 3) {
+          layer.msg(resultVo.msg,{
+            icon: 2,
+            time: 1000  // 1秒关闭
+          }, function (){
+            // 一秒以后进行页面重新刷新
+            location.reload();
+          });
+        }
+
+      }).fail(function() {
+        layer.alert('添加失败!', {icon: 2});
+      });
+      // 阻止form表单提示
+      return false;
+    })
+    // 修改数据
+    form.on('submit(edit-btn-form)', function (data) {
+      $.post("manage/shopMaterial", data.field, function (resultVo) {
+        if (resultVo.code === 0) {
+          layer.msg(resultVo.msg,{
+            icon: 1,
+            time: 5000  // 1秒关闭
+          }, function (){
+            // 一秒以后进行页面重新刷新
+            location.reload();
+          });
+        }else if (resultVo.code === 1) {
+          layer.msg(resultVo.msg,{
+            icon: 0,
+            time: 5000  // 1秒关闭
+          }, function (){
+            // 一秒以后进行页面重新刷新
+            location.reload();
+          });
+        }else if (resultVo.code === 3) {
+          layer.msg(resultVo.msg,{
+            icon: 2,
+            time: 5000  // 1秒关闭
+          }, function (){
+            // 一秒以后进行页面重新刷新
+            location.reload();
+          });
+        }
+
+      }).fail(function() {
+        layer.alert('添加失败!', {icon: 2});
+      });
+      // 阻止form表单提示
+      return false;
+    })
+    // 进行搜索操作
+    $('#searchBtn').on('click', function(){
+      var material = $('#searchMaterialName').val();
+      // 执行搜索，并重载表格数据
+      table.reload('innerUserInfo', {
+        where: {
+          materialName: material
+        },
+        page: {
+          curr: 1 //重新从第 1 页开始
+        }
+      });
+    });
+  });
+</script>
+
+</body>
+</html>

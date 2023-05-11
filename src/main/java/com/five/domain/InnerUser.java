@@ -23,7 +23,7 @@ public class InnerUser {
     private LocalDate innerUserCreateTime;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate innerUserStopTime;
-//    private String innerUserWorkStatus;         // 员工工作状态
+    private String innerUserWorkStatus;         // 员工工作状态
 //    private String innerUserAccountStatus;  // 员工账号状态
     private String innerUserStatus;         // 员工状态
     private String innerUserRole;           // 角色
